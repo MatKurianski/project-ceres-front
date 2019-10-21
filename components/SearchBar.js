@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#e1e1e1',
         margin: 12,
         padding: 5,
-        borderRadius: 5
+        borderRadius: 5,
+        fontFamily: 'open-sans'
     }
 });
 

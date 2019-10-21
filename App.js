@@ -1,10 +1,11 @@
 import React from 'react';
 import Constants from 'expo-constants'
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
+import CustomText from './components/Custom/CustomText'
 import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
 
@@ -60,7 +61,7 @@ const bottomTabNavigator = createBottomTabNavigator(
 function Perfil() {
     return (
         <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-            <Text>Meu perfil aqui</Text>
+            <CustomText>Meu perfil aqui</CustomText>
         </View>
     )
 }
@@ -68,7 +69,7 @@ function Perfil() {
 function Config() {
     return (
         <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-            <Text>Configurações aqui</Text>
+            <CustomText>Configurações aqui</CustomText>
         </View>
     )
 }
@@ -96,7 +97,7 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <AppBar />
         <SearchBar />
         <CategoriesSection title="Categorias" horizontal={true} />

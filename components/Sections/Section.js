@@ -8,7 +8,7 @@ export default function Section(props) {
             <CustomText style={styles.text}>
                 {props.title}
             </CustomText>
-            <ScrollView horizontal={props.horizontal} styles={styles.scrollview}>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal={props.horizontal} styles={styles.scrollview}>
                 {props.children}
             </ScrollView>
         </View>
