@@ -1,6 +1,7 @@
 import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native'
 import CategoryCard from './../Cards/CategoryCard'
-import Section from './Section'
+import SectionHeader from './../Sections/SectionHeader'
 
 export default function CategoriesSection() {
     const categories = [
@@ -31,8 +32,27 @@ export default function CategoriesSection() {
     ))
 
     return (
-        <Section title="Categorias" horizontal={true} centerContent={true} contentContainerStyle={{flexGrow: 1}}>
+        <View style={styles.container}>
+        <SectionHeader>Categorias</SectionHeader>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} styles={styles.scrollview}>
             {categoriesCards}
-        </Section>
+        </ScrollView>
+    </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 0,
+        backgroundColor: 'white'
+    },
+    scrollview: {
+        borderWidth: 1,
+        borderColor: 'grey',
+        width: '100%',
+        flex: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 20
+    }
+})

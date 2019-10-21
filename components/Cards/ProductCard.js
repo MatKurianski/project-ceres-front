@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     foodcard: {
         flex: 1,
         flexDirection: 'row',
-        width: "100%",
         height: 100,
         borderWidth: 0.8,
         borderColor: '#E0E0E0',
@@ -58,5 +57,3 @@ const styles = StyleSheet.create({
         textAlignVertical: 'bottom'
     }
 });
-
-
