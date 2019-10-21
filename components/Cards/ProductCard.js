@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, Dimensions} from 'react-native';
-
-const {height, width} = Dimensions.get('window');
+import { StyleSheet, View, Image, Dimensions} from 'react-native';
+import CustomText from './../Custom/CustomText'
 
 export default function FoodCard(props) {
   return (
@@ -14,8 +13,8 @@ export default function FoodCard(props) {
             />
         </View>
          <View style={styles.text}>
-            <Text style={styles.title}>{props.title}</Text>
-            <Text style={styles.desc}>{'R$ '+props.price}</Text>
+            <CustomText bold={true} style={styles.title}>{props.title}</CustomText>
+            <CustomText style={styles.desc}>{'R$ '+props.price}</CustomText>
          </View>
     </View>
   );
@@ -37,9 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 15
     },
-    title: {
-        fontWeight: 'bold'
-    },
+    title: {},
     desc: {
         flex: 1,
         textAlign: 'right',

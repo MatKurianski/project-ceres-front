@@ -1,11 +1,11 @@
 import React from 'react';
-import Constants from 'expo-constants'
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, View} from 'react-native';
+import CustomText from './Custom/CustomText'
 
 export default function AppBar() {
   return (
     <View style={styles.AppBar}>
-      <Text style={styles.title}>Project Ceres</Text>
+      <CustomText bold={true} style={styles.title}>Project Ceres</CustomText>
     </View>
   );
 }

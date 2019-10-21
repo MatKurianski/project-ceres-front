@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, Image, Text, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
+import CustomText from './../Custom/CustomText'
 
 export default function CategoryCard({name, image}) {
     return (
@@ -9,9 +10,9 @@ export default function CategoryCard({name, image}) {
                 style={styles.image}
                 source={image}
             />
-            <Text style={styles.title}>
+            <CustomText style={styles.title}>
                 {name ? name : 'Undefined'}
-            </Text>
+            </CustomText>
         </View>
     )
 }

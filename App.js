@@ -13,6 +13,8 @@ import CategoriesSection from './components/Sections/CategoriesSection'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
+import * as Font from 'expo-font'
+
 const bottomTabNavigator = createBottomTabNavigator(
     {
       Home: App,
@@ -72,6 +74,24 @@ function Config() {
 }
 
 function App() {
+  const [fontLoaded, setFontLoaded] = React.useState(false)
+
+  React.useEffect( () => {
+    if(!fontLoaded) {
+      async function loadFont() {
+        return await Font.loadAsync({
+          'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+          'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+        });
+      }
+      loadFont().then(() => {
+        setFontLoaded(true)
+      })
+    }
+  }, [])
+
+  if(!fontLoaded) return null
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -88,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: Constants.statusBarHeight
+    paddingTop: Constants.statusBarHeight,
   },
   title: {
       fontSize: 28

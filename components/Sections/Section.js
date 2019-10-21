@@ -1,14 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, Dimensions } from 'react-native';
-
-const {height, width} = Dimensions.get('window');
+import { StyleSheet, View, ScrollView } from 'react-native';
+import CustomText from './../Custom/CustomText'
 
 export default function Section(props) {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>
+            <CustomText style={styles.text}>
                 {props.title}
-            </Text>
+            </CustomText>
             <ScrollView horizontal={props.horizontal} styles={styles.scrollview}>
                 {props.children}
             </ScrollView>
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
     scrollview: {
         borderWidth: 1,
         borderColor: 'grey',
-        width: width,
+        width: '100%',
         flex: 0,
         justifyContent: 'center',
         alignItems: 'center',
