@@ -3,9 +3,10 @@ import { Text } from 'react-native'
 
 export default function CustomText(props) {
     let fontFamily = 'open-sans'
-    if(props.bold) fontFamily = 'open-sans-bold'
-    
-    return(
-        <Text style={{fontFamily, ...props.style}}>{props.children}</Text>
-    )
+    if(props.bold) fontFamily += '-bold'
+    if(props.italic) fontFamily += '-italic'
+
+    const {style, ...otherProps} = props
+
+    return <Text style={{fontFamily, ...style}} {...otherProps}>{props.children}</Text>
 }

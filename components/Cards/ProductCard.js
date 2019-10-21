@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, Dimensions} from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import CustomText from './../Custom/CustomText'
 
 export default function FoodCard(props) {
@@ -12,9 +12,12 @@ export default function FoodCard(props) {
                 source={props.image}
             />
         </View>
-         <View style={styles.text}>
-            <CustomText bold={true} style={styles.title}>{props.title}</CustomText>
-            <CustomText style={styles.desc}>{'R$ '+props.price}</CustomText>
+         <View style={styles.textArea}>
+            <View style={styles.title}>
+                <CustomText numberOfLines={1} bold={true} >{props.title}</CustomText>
+                <CustomText numberOfLines={1} italic={true} >{props.seller}</CustomText>
+            </View>
+            <CustomText style={styles.price}>{'R$ '+props.price}</CustomText>
          </View>
     </View>
   );
@@ -32,14 +35,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginBottom: 5
     },
-    text: {
+    textArea: {
         flex: 1,
-        padding: 15
+        flexDirection: 'row',
+        padding: 10
     },
-    title: {},
-    desc: {
-        flex: 1,
-        textAlign: 'right',
+    title: {
+        flex: 1
+    },
+    price: {
+        flex: 0,
         textAlignVertical: 'bottom'
     }
 });
