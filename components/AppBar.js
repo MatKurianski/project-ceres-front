@@ -13,7 +13,6 @@ export default function AppBar() {
 const styles = StyleSheet.create({
   AppBar: {
     backgroundColor: '#fff',
-    paddingTop: 15,
     padding: 15,
     fontWeight: 'bold'
   },
