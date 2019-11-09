@@ -1,11 +1,13 @@
 import React from 'react';
-import Constants from 'expo-constants'
-import { StyleSheet, View, ScrollView } from 'react-native';
+import Login from './components/Pages/Login'
+import { StyleSheet, Button, View, ScrollView } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import CustomText from './components/Custom/CustomText'
+import LoginButton from './components/Custom/LoginButton'
 import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
 
@@ -57,10 +59,25 @@ const bottomTabNavigator = createBottomTabNavigator(
   },
 );
 
-function Perfil() {
+const mainStack = createStackNavigator({
+  Main: {
+    screen: bottomTabNavigator,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+  },
+  Login: {
+    screen: Login,
+    navigationOptions: () => ({
+      headerTransparent: true
+    })
+  }
+})
+
+function Perfil(props) {
   return (
     <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-      <CustomText>Meu perfil aqui</CustomText>
+      <LoginButton navigation={props.navigation} title="Faça login para ver essa página" />
     </View>
   )
 }
@@ -117,4 +134,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default createAppContainer(bottomTabNavigator)
+export default createAppContainer(mainStack);
