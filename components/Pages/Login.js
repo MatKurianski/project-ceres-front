@@ -1,13 +1,15 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { View, StyleSheet, TextInput, Button, Image } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import { saveToken } from './../../services/auth'
+import { AuthCtx } from './../Context/Auth'
 import axios from 'axios'
 
 export default function Login(props) {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  const { setUserData } = useContext(AuthCtx)
 
   function signIn(props) {
     axios.post('http://192.168.1.18:8080/login', {
@@ -15,9 +17,15 @@ export default function Login(props) {
       senha
     })
     .then(res => {
-      const { status, token } = res.data
+      const { status, ...userData } = res.data
       if (status === "sucesso") {
-        saveToken(token)
+        saveToken(userData)
+        setUserData({
+          logged: true,
+          nome: userData.nome,
+          email: userData.email,
+          token: userData.token
+        })
         props.navigation.pop()
       }
     })

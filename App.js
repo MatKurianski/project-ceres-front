@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Pages/Login'
-import { StyleSheet, Button, View, ScrollView } from 'react-native';
+import { StyleSheet, AsyncStorage, View, ScrollView, Button} from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -16,9 +16,12 @@ import Sections from './components/Sections/Sections'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
+import { AuthContext, AuthCtx } from './components/Context/Auth'
+import { TOKEN_KEY } from './services/auth'
+
 import * as Font from 'expo-font'
 
-const bottomTabNavigator = createBottomTabNavigator(
+const BottomTabNavigator = createBottomTabNavigator(
   {
     Home: App,
     Perfil: Perfil,
@@ -59,9 +62,9 @@ const bottomTabNavigator = createBottomTabNavigator(
   },
 );
 
-const mainStack = createStackNavigator({
+const MainStack = createStackNavigator({
   Main: {
-    screen: bottomTabNavigator,
+    screen: BottomTabNavigator,
     navigationOptions: () => ({
       headerShown: false
     }),
@@ -74,10 +77,27 @@ const mainStack = createStackNavigator({
   }
 })
 
+const mainStackWithAuth = props => (
+  <AuthContext>
+    <MainStack {...props} />
+  </AuthContext>
+)
+
+mainStackWithAuth.router = MainStack.router;
+
 function Perfil(props) {
+  const {userData, setUserData} = React.useContext(AuthCtx)
+  let test = 'Não logado'
+  if(userData.logged) {
+    test = 'Logado'
+  }
   return (
     <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-      <LoginButton navigation={props.navigation} title="Faça login para ver essa página" />
+      <CustomText>{test}</CustomText>
+      {!userData.logged ? 
+        <LoginButton navigation={props.navigation} title="Faça login para ver essa página" /> : 
+        <Button title="Deslogar" onPress={() => setUserData({logged: false, nome: null, email: null, token: null})} />
+        }
     </View>
   )
 }
@@ -92,8 +112,9 @@ function Config() {
 
 function App() {
   const [fontLoaded, setFontLoaded] = React.useState(false)
+  const { setUserData } = React.useContext(AuthCtx)
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     if(!fontLoaded) {
       async function loadFont() {
         return await Font.loadAsync({
@@ -106,6 +127,12 @@ function App() {
       loadFont().then(() => {
         setFontLoaded(true)
       })
+
+      AsyncStorage.getItem(TOKEN_KEY)
+        .then(item => {
+          setUserData({logged: true, ...item})
+        })
+        .catch(e => {})
     }
   }, [])
 
@@ -134,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default createAppContainer(mainStack);
+export default createAppContainer(mainStackWithAuth);
