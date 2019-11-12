@@ -16,8 +16,7 @@ import Sections from './components/Sections/Sections'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
-import { AuthContext, AuthCtx } from './components/Context/Auth'
-import { TOKEN_KEY } from './services/auth'
+import { AuthContext, AuthCtx, TOKEN_KEY } from './components/Context/Auth'
 
 import * as Font from 'expo-font'
 
@@ -86,7 +85,7 @@ const mainStackWithAuth = props => (
 mainStackWithAuth.router = MainStack.router;
 
 function Perfil(props) {
-  const {userData, setUserData} = React.useContext(AuthCtx)
+  const {userData, signIn, signOut} = React.useContext(AuthCtx)
   let test = 'Não logado'
   if(userData.logged) {
     test = 'Logado'
@@ -96,7 +95,7 @@ function Perfil(props) {
       <CustomText>{test}</CustomText>
       {!userData.logged ? 
         <LoginButton navigation={props.navigation} title="Faça login para ver essa página" /> : 
-        <Button title="Deslogar" onPress={() => setUserData({logged: false, nome: null, email: null, token: null})} />
+        <Button title="Deslogar" onPress={signOut} />
         }
     </View>
   )

@@ -2,16 +2,15 @@ import React from 'react'
 import { useState, useContext } from 'react'
 import { View, StyleSheet, TextInput, Button, Image } from 'react-native'
 import CustomText from './../Custom/CustomText'
-import { saveToken } from './../../services/auth'
 import { AuthCtx } from './../Context/Auth'
 import axios from 'axios'
 
 export default function Login(props) {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const { setUserData } = useContext(AuthCtx)
+  const { signIn } = useContext(AuthCtx)
 
-  function signIn(props) {
+  function logar(props) {
     axios.post('http://192.168.1.18:8080/login', {
       email,
       senha
@@ -19,13 +18,7 @@ export default function Login(props) {
     .then(res => {
       const { status, ...userData } = res.data
       if (status === "sucesso") {
-        saveToken(userData)
-        setUserData({
-          logged: true,
-          nome: userData.nome,
-          email: userData.email,
-          token: userData.token
-        })
+        signIn(userData)
         props.navigation.pop()
       }
     })
@@ -64,7 +57,7 @@ export default function Login(props) {
         style={{...styles.input, marginBottom: 25}}
         placeholder="Senha"
       />
-      <Button onPress={() => signIn(props)} title="Logar" />
+      <Button onPress={() => logar(props)} title="Logar" />
       <CustomText style={styles.opcoesFinais}>
         Não tenho conta (cadastrar)
       </CustomText>
