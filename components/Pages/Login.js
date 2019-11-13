@@ -11,7 +11,7 @@ export default function Login(props) {
   const { signIn } = useContext(AuthCtx)
 
   function logar(props) {
-    axios.post('http://192.168.1.18:8080/login', {
+    axios.post('http://172.115.4.53:8080/login', {
       email,
       senha
     })

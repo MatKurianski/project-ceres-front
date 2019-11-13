@@ -85,17 +85,15 @@ const mainStackWithAuth = props => (
 mainStackWithAuth.router = MainStack.router;
 
 function Perfil(props) {
-  const {userData, signIn, signOut} = React.useContext(AuthCtx)
+  const {userData, signOut} = React.useContext(AuthCtx)
   let test = 'Não logado'
-  if(userData.logged) {
-    test = 'Logado'
-  }
+  if(userData.logged == true) test = 'Logado'
   return (
     <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
       <CustomText>{test}</CustomText>
       {!userData.logged ? 
         <LoginButton navigation={props.navigation} title="Faça login para ver essa página" /> : 
-        <Button title="Deslogar" onPress={signOut} />
+        <Button title="Deslogar" onPress={() => signOut()} />
         }
     </View>
   )
@@ -129,6 +127,7 @@ function App() {
 
       AsyncStorage.getItem(TOKEN_KEY)
         .then(item => {
+          if (item == null) return
           setUserData({logged: true, ...item})
         })
         .catch(e => {})
