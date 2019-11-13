@@ -1,14 +1,10 @@
 import React from 'react'
-import { AsyncStorage, ToastAndroid } from 'react-native'
+import { AsyncStorage } from 'react-native'
 
 export const TOKEN_KEY = "EACherifes";
 
 const saveToken = async userData => {
   await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(userData))
-  ToastAndroid.show('Logado com sucesso!', ToastAndroid.LONG);
-  ToastAndroid.show(userData.nome, ToastAndroid.SHORT);
-  ToastAndroid.show(userData.email, ToastAndroid.SHORT);
-  ToastAndroid.show(userData.token, ToastAndroid.SHORT);
 };
 
 const destroyToken = () => AsyncStorage.removeItem(TOKEN_KEY);

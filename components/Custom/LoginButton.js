@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
-export default function LoginButton(props) {
+function LoginButton(props) {
   return (
     <Button {...props} onPress={() => props.navigation.navigate('Login')} />
   )
 } 
+
+export default withNavigation(LoginButton)

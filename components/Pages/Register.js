@@ -1,26 +1,25 @@
 import React from 'react'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
-import { AuthCtx } from './../Context/Auth'
 import axios from 'axios'
 import { getApiUrl } from './../../assets/config'
 
 export default function Login(props) {
+  const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const { signIn } = useContext(AuthCtx)
 
-  function logar(props) {
-    axios.post(getApiUrl()+'/login', {
+  function registrar(props) {
+    axios.post(getApiUrl()+'/register', {
+      nome,
       email,
       senha
     })
     .then(res => {
       const { status, ...userData } = res.data
       if (status === "sucesso") {
-        signIn(userData)
-        ToastAndroid.show('Logado com sucesso!', ToastAndroid.LONG);
+        ToastAndroid.show('Registrado com sucesso!', ToastAndroid.LONG);
         props.navigation.pop()
       }
     })
@@ -40,11 +39,17 @@ export default function Login(props) {
     <KeyboardAvoidingView style={styles.container}>
       <Image style={styles.comidas} source={require('../../assets/logo/comidas.png')} />
       <CustomText bold={true} style={styles.title}>
-        Faça login!
+        Registre-se!
       </CustomText>
       <CustomText style={styles.subtitle}>
-        Para anunciar produtos, é necessário que você esteja logado
+        E comece agora mesmo a vender seus produtos!
       </CustomText>
+      <TextInput 
+        onChangeText={text => setNome(text)}
+        value={nome} 
+        style={styles.input} 
+        placeholder="Seu nome"
+      />
       <TextInput 
         onChangeText={text => setEmail(text)}
         value={email} 
@@ -62,13 +67,7 @@ export default function Login(props) {
         style={{...styles.input, marginBottom: 25}}
         placeholder="Senha"
       />
-      <Button onPress={() => logar(props)} title="Logar" />
-      <CustomText onPress={() => props.navigation.navigate('Register')} style={styles.opcoesFinais}>
-        Não tenho conta (cadastrar)
-      </CustomText>
-      <CustomText style={styles.opcoesFinais}>
-        Esqueci minha senha
-      </CustomText>
+      <Button onPress={() => registrar(props)} title="Registre-se" />
     </KeyboardAvoidingView>
   )
 }

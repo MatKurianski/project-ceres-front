@@ -7,7 +7,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import CustomText from './components/Custom/CustomText'
-import LoginButton from './components/Custom/LoginButton'
 import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
 
@@ -17,6 +16,9 @@ import Sections from './components/Sections/Sections'
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
 import { AuthContext, AuthCtx, TOKEN_KEY } from './components/Context/Auth'
+import Perfil from './components/Pages/Perfil'
+import Config from './components/Pages/Config'
+import Register from './components/Pages/Register'
 
 import * as Font from 'expo-font'
 
@@ -71,41 +73,30 @@ const MainStack = createStackNavigator({
   Login: {
     screen: Login,
     navigationOptions: () => ({
-      headerTransparent: true
+      headerStyle: {
+        borderBottomWidth: 0,
+        elevation: 0
+      }
+    })
+  },
+  Register: {
+    screen: Register,
+    navigationOptions: () => ({
+      headerStyle: {
+        borderBottomWidth: 0,
+        elevation: 0
+      }
     })
   }
 })
 
-const mainStackWithAuth = props => (
+const MainStackWithAuth = props => (
   <AuthContext>
     <MainStack {...props} />
   </AuthContext>
 )
 
-mainStackWithAuth.router = MainStack.router;
-
-function Perfil(props) {
-  const {userData, signOut} = React.useContext(AuthCtx)
-  let test = 'Não logado'
-  if(userData.logged == true) test = 'Logado'
-  return (
-    <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-      <CustomText>{test}</CustomText>
-      {!userData.logged ? 
-        <LoginButton navigation={props.navigation} title="Faça login para ver essa página" /> : 
-        <Button title="Deslogar" onPress={() => signOut()} />
-        }
-    </View>
-  )
-}
-
-function Config() {
-  return (
-    <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-      <CustomText>Configurações aqui</CustomText>
-    </View>
-  )
-}
+MainStackWithAuth.router = MainStack.router;
 
 function App() {
   const [fontLoaded, setFontLoaded] = React.useState(false)
@@ -127,8 +118,9 @@ function App() {
 
       AsyncStorage.getItem(TOKEN_KEY)
         .then(item => {
-          if (item == null) return
-          setUserData({logged: true, ...item})
+          itemObject = JSON.parse(item)
+          if (itemObject === null) return
+          setUserData({logged: true, ...itemObject})
         })
         .catch(e => {})
     }
@@ -159,4 +151,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default createAppContainer(mainStackWithAuth);
+export default createAppContainer(MainStackWithAuth);
