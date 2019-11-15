@@ -10,6 +10,7 @@ import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import { Notifications } from 'expo'
+import * as BackgroundFetch from 'expo-background-fetch'
 
 import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
@@ -27,7 +28,7 @@ import Register from './components/Pages/Register'
 import * as Font from 'expo-font'
 
 const task = "EACH"
-TaskManager.defineTask(task, ({data: {eventType, region}, error}) => {
+TaskManager.defineTask(task, async ({data: {eventType, region}, error}) => {
   if(error){
     console.log(error)
     return
@@ -46,6 +47,11 @@ TaskManager.defineTask(task, ({data: {eventType, region}, error}) => {
     })
   }
 })
+
+BackgroundFetch.registerTaskAsync(task, {
+  startOnBoot: true,
+  minimumInterval: 2
+}).then(res => console.log(res))
 
 const iniciarGeolocalizacao = async () => {
   if(!(await Permissions.askAsync(Permissions.LOCATION))) {
