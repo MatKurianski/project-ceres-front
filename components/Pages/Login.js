@@ -37,7 +37,7 @@ export default function Login(props) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Image style={styles.comidas} source={require('../../assets/logo/comidas.png')} />
       <CustomText bold={true} style={styles.title}>
         Faça login!

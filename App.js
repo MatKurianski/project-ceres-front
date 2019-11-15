@@ -1,12 +1,16 @@
 import React from 'react';
 import Login from './components/Pages/Login'
-import { StyleSheet, AsyncStorage, View, ScrollView, Button} from 'react-native';
+import { StyleSheet, AsyncStorage, View, ScrollView } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
-import CustomText from './components/Custom/CustomText'
+import * as Permissions from 'expo-permissions'
+import * as Location from 'expo-location'
+import * as TaskManager from 'expo-task-manager'
+import { Notifications } from 'expo'
+
 import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
 
@@ -21,6 +25,44 @@ import Config from './components/Pages/Config'
 import Register from './components/Pages/Register'
 
 import * as Font from 'expo-font'
+
+const task = "EACH"
+TaskManager.defineTask(task, ({data: {eventType, region}, error}) => {
+  if(error){
+    console.log(error)
+    return
+  }
+  if (eventType === Location.GeofencingEventType.Enter) {
+    console.log("You've entered region:", region);
+    Notifications.presentLocalNotificationAsync({
+      title: 'Comidinhas EACH',
+      body: "Você está na EACH!"
+    })
+  } else if (eventType === Location.GeofencingEventType.Exit) {
+    console.log("You've left region:", region);
+    Notifications.presentLocalNotificationAsync({
+      title: 'Comidinhas EACH',
+      body: "Você saiu da EACH!"
+    })
+  }
+})
+
+const iniciarGeolocalizacao = async () => {
+  if(!(await Permissions.askAsync(Permissions.LOCATION))) {
+    console.log(erro)
+    return
+  }
+  Location.startGeofencingAsync(task, [
+    {
+      // Coordenadas da EACH
+      latitude: -23.4823919,
+      longitude: -46.5026385,
+      radius: 1000,
+    }
+  ])
+}
+
+iniciarGeolocalizacao()
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
