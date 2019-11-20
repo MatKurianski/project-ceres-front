@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, TouchableOpacity, StyleSheet, ToastAndroid, StatusBar, Image, Dimensions } from 'react-native'
+import { ScrollView, View, TouchableOpacity, StyleSheet, FlatList, StatusBar, Image, Dimensions } from 'react-native'
 import {AuthCtx} from './../Context/Auth'
 import { withNavigationFocus } from 'react-navigation'
 import CustomText from './../Custom/CustomText'
@@ -10,12 +10,12 @@ const imageHeight = (width / 2) - 30
 
 function Opcao(props) {
   return (
-    <TouchableOpacity style={stylesOpcao.container}>
+    <TouchableOpacity onPress={() => props.onPress()} style={stylesOpcao.container}>
       <CustomText style={stylesOpcao.title}>
-        Teste
+        {props.title}
       </CustomText>
       <CustomText style={stylesOpcao.desc}>
-        Testezin
+        {props.desc}
       </CustomText>
     </TouchableOpacity>
   )
@@ -26,10 +26,11 @@ const stylesOpcao = StyleSheet.create({
     flex: 0,
     width: '100%',
     paddingHorizontal: 10,
-    paddingVertical: 20
+    paddingVertical: 20,
+    backgroundColor: 'white'
   },
   title: {
-    fontSize: 16
+    fontSize: 18
   },
   desc: {
     fontSize: 12
@@ -37,7 +38,20 @@ const stylesOpcao = StyleSheet.create({
 })
 
 function Perfil(props) {
-  const {userData} = React.useContext(AuthCtx)
+  const {userData, signOut} = React.useContext(AuthCtx)
+
+  const opcoes = [
+    {
+      title: "Adicionar produto",
+      desc: "Comece a anunciar agora mesmo!",
+      onPress: () => console.log('salve')
+    },
+    {
+      title: "Sair",
+      desc: "Fazer logoff",
+      onPress: () => signOut()
+    }
+  ]
 
   React.useEffect(() => {
     console.log('salve')
@@ -76,11 +90,11 @@ function Perfil(props) {
                     <CustomText style={styles.squareSmallText}>Estrelas</CustomText>
                   </View>
                 </View>
-                <View>
-                  <Opcao>
-
-                  </Opcao>
-                </View>
+                <FlatList
+                  data={opcoes} 
+                  renderItem={({item}) => <Opcao title={item.title} desc={item.desc} onPress={item.onPress} />}
+                  keyExtractor={item => item.title}
+                />
                 <View style={styles.secao}>
                   <CustomText bold={true} style={styles.secaoTitulo}>
                     Meus produtos
