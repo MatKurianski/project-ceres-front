@@ -12,9 +12,12 @@ export default function Login(props) {
   const { signIn } = useContext(AuthCtx)
 
   function logar(props) {
+    if(email.length <= 0 || senha.length <= 0) return
     axios.post(getApiUrl()+'/login', {
       email,
       senha
+    }, {
+      timeout: 5000
     })
     .then(res => {
       const { status, ...userData } = res.data
@@ -22,6 +25,8 @@ export default function Login(props) {
         signIn(userData)
         ToastAndroid.show('Logado com sucesso!', ToastAndroid.LONG);
         props.navigation.pop()
+      } else if(userData.mensagem !== undefined) {
+        ToastAndroid.show(userData.mensagem, ToastAndroid.SHORT)
       }
     })
     .catch(e => {

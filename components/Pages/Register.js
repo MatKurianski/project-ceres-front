@@ -31,6 +31,7 @@ export default function Login(props) {
   }
 
   function clearInputs() {
+    setNome('')
     setEmail('')
     setSenha('')
   }

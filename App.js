@@ -10,7 +10,6 @@ import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import { Notifications } from 'expo'
-import * as BackgroundFetch from 'expo-background-fetch'
 
 import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
@@ -28,19 +27,18 @@ import Register from './components/Pages/Register'
 import * as Font from 'expo-font'
 
 const task = "EACH"
-TaskManager.defineTask(task, async ({data: {eventType, region}, error}) => {
+TaskManager.defineTask(task, ({data: {eventType, region}, error}) => {
   if(error){
     console.log(error)
     return
   }
+  console.log('Ação engatilhada')
   if (eventType === Location.GeofencingEventType.Enter) {
-    console.log("You've entered region:", region);
     Notifications.presentLocalNotificationAsync({
       title: 'Comidinhas EACH',
       body: "Você está na EACH!"
     })
   } else if (eventType === Location.GeofencingEventType.Exit) {
-    console.log("You've left region:", region);
     Notifications.presentLocalNotificationAsync({
       title: 'Comidinhas EACH',
       body: "Você saiu da EACH!"
@@ -48,24 +46,19 @@ TaskManager.defineTask(task, async ({data: {eventType, region}, error}) => {
   }
 })
 
-BackgroundFetch.registerTaskAsync(task, {
-  startOnBoot: true,
-  minimumInterval: 2
-}).then(res => console.log(res))
-
-const iniciarGeolocalizacao = async () => {
-  if(!(await Permissions.askAsync(Permissions.LOCATION))) {
-    console.log(erro)
-    return
-  }
-  Location.startGeofencingAsync(task, [
-    {
-      // Coordenadas da EACH
-      latitude: -23.4823919,
-      longitude: -46.5026385,
-      radius: 1000,
-    }
-  ])
+const iniciarGeolocalizacao = () => {
+  Permissions.askAsync(Permissions.LOCATION)
+    .then(res => {
+      if(!res) return
+      Location.startGeofencingAsync(task, [
+        {
+          // Coordenadas da EACH
+          latitude: -23.4823919,
+          longitude: -46.5026385,
+          radius: 1000,
+        }
+      ])
+    })
 }
 
 iniciarGeolocalizacao()
