@@ -10,6 +10,7 @@ const saveToken = async userData => {
 const destroyToken = () => AsyncStorage.removeItem(TOKEN_KEY);
 
 const defaultUserData = {
+  id: undefined,
   logged: false,
   nome: undefined,
   email: undefined,

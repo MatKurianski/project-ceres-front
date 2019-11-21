@@ -1,26 +1,36 @@
 import React from 'react'
-import { KeyboardAvoidingView, StyleSheet, TextInput, View, Button } from 'react-native'
+import { KeyboardAvoidingView, ToastAndroid, StyleSheet, TextInput, View, Button } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import { TextInputMask } from 'react-native-masked-text'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-
-let index = 0
+import { getApiUrl } from './../../assets/config'
+import { AuthCtx } from './../Context/Auth'
+import axios from 'axios'
 
 export default function AdicionarProduto(props) {
   const [nome, setNome] = React.useState('')
   const [preco, setPreco] = React.useState(0)
-  const [precoNumero, setPrecoNumero] = React.useState('')
-
-  const categorias = ['Vegano', 'Doce', 'Salgado', 'Massa', 'Gourmet', 'Vegetariano', "Sem Lactose", "Low Carb", "Saudável", 'Orgânico']
+  const [precoNumero, setPrecoNumero] = React.useState(0)
 
   const [categoriasSelecionadas, setCategoriasSelecionadas] = React.useState([])
 
+  const { userData } = React.useContext(AuthCtx)
+
   React.useEffect(() => {
-    const array = categorias.map(element => ({
-      nome: element,
-      selecionada: false
-    }))
-    setCategoriasSelecionadas(array)
+    axios.get(getApiUrl()+'/categories')
+      .then(res => {
+        const categorias = res.data
+        const categoriasState = categorias.map(categoria => ({
+          id: categoria.idCategoria,
+          nome: categoria.nomecategoria,
+          selecionada: false
+        }))
+        setCategoriasSelecionadas(categoriasState)
+      })
+      .catch(e => {
+        ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
+        console.log(e)
+      })
   }, [])
 
   const toggleSelected = categoriaNome => {
@@ -48,6 +58,37 @@ export default function AdicionarProduto(props) {
         </CustomText>
       </TouchableOpacity>
     )
+  }
+
+  function adicionarProduto() {
+    if(!nome || precoNumero === 0) {
+      ToastAndroid.show("Revise suas informações", ToastAndroid.SHORT)
+      return
+    }
+    const { token, id } = userData
+    const categorias = categoriasSelecionadas
+      .filter(categoria => categoria.selecionada)
+      .map(categoria => categoria.id)
+    axios.post(getApiUrl()+'/new_product', {
+      nome,
+      preco: precoNumero,
+      descricao: 'salve',
+      categorias,
+      usuario: id
+    },{
+      headers: { token }
+    }).then(res => {
+      const data = res.data
+      if(data.status !== 'sucesso') {
+        console.log(data)
+      } else {
+        ToastAndroid.show('Produto adicionado!', ToastAndroid.SHORT)
+        props.navigation.pop()
+      }
+    }).catch(err => {
+        ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
+        console.log(err)
+      })
   }
 
   return (
@@ -84,7 +125,7 @@ export default function AdicionarProduto(props) {
         {
           categoriasSelecionadas.map((element) => (
               <CategoriaSelection 
-                key={element.nome}
+                key={element.id}
                 onPress={() => toggleSelected(element.nome)} 
                 selecionada={element.selecionada} 
                 title={element.nome}/>
@@ -92,7 +133,7 @@ export default function AdicionarProduto(props) {
         }
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Button title="Adicionar" onPress={() => props.navigation.pop()}/>
+        <Button title="Adicionar" onPress={() => adicionarProduto()}/>
       </View>
     </KeyboardAvoidingView>
   )
