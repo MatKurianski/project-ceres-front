@@ -23,6 +23,7 @@ import { AuthContext, AuthCtx, TOKEN_KEY } from './components/Context/Auth'
 import Perfil from './components/Pages/Perfil'
 import Config from './components/Pages/Config'
 import Register from './components/Pages/Register'
+import AdicionarProduto from './components/Pages/AdicionarProduto'
 
 import * as Font from 'expo-font'
 
@@ -104,6 +105,22 @@ const BottomTabNavigator = createBottomTabNavigator(
   },
 );
 
+const backWhiteHeader = () => ({
+  headerStyle: {
+    borderBottomWidth: 0,
+    elevation: 0
+  }
+})
+
+const backWhiteHeaderAndTitle = (title) => {
+  const res = backWhiteHeader()
+
+  return () => ({
+    title,
+    ...res
+  })
+}
+
 const MainStack = createStackNavigator({
   Main: {
     screen: BottomTabNavigator,
@@ -113,21 +130,15 @@ const MainStack = createStackNavigator({
   },
   Login: {
     screen: Login,
-    navigationOptions: () => ({
-      headerStyle: {
-        borderBottomWidth: 0,
-        elevation: 0
-      }
-    })
+    navigationOptions: backWhiteHeader
   },
   Register: {
     screen: Register,
-    navigationOptions: () => ({
-      headerStyle: {
-        borderBottomWidth: 0,
-        elevation: 0
-      }
-    })
+    navigationOptions: backWhiteHeader
+  },
+  AdicionarProduto: {
+    screen: AdicionarProduto,
+    navigationOptions: backWhiteHeaderAndTitle('Adicionando produto')
   }
 })
 

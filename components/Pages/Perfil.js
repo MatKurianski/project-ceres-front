@@ -44,7 +44,7 @@ function Perfil(props) {
     {
       title: "Adicionar produto",
       desc: "Comece a anunciar agora mesmo!",
-      onPress: () => console.log('salve')
+      onPress: () => props.navigation.navigate('AdicionarProduto')
     },
     {
       title: "Sair",
@@ -54,7 +54,6 @@ function Perfil(props) {
   ]
 
   React.useEffect(() => {
-    console.log('salve')
     StatusBar.setBackgroundColor('#e8e8e8')
     const listener1 = props.navigation.addListener('didFocus', () => {
       StatusBar.setBackgroundColor('#e8e8e8')
@@ -94,6 +93,7 @@ function Perfil(props) {
                   data={opcoes} 
                   renderItem={({item}) => <Opcao title={item.title} desc={item.desc} onPress={item.onPress} />}
                   keyExtractor={item => item.title}
+                  ItemSeparatorComponent={() => <View style={{borderWidth: 0.5, borderColor: 'gray'}} />}
                 />
                 <View style={styles.secao}>
                   <CustomText bold={true} style={styles.secaoTitulo}>
