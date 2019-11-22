@@ -7,11 +7,15 @@ import { getApiUrl } from './../../assets/config'
 import { AuthCtx } from './../Context/Auth'
 import axios from 'axios'
 
+import * as ImagePicker from 'expo-image-picker'
+
+import FormData from 'form-data'
+
 export default function AdicionarProduto(props) {
   const [nome, setNome] = React.useState('')
   const [preco, setPreco] = React.useState(0)
   const [precoNumero, setPrecoNumero] = React.useState(0)
-
+  const [imagem, setImage] = React.useState('')
   const [categoriasSelecionadas, setCategoriasSelecionadas] = React.useState([])
 
   const { userData } = React.useContext(AuthCtx)
@@ -60,8 +64,20 @@ export default function AdicionarProduto(props) {
     )
   }
 
+  async function uploadImage() {
+    const imagem = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+    if(!imagem.cancelled) {
+      setImage(imagem)
+    }
+  }
+
   function adicionarProduto() {
-    if(!nome || precoNumero === 0) {
+    if(!nome || precoNumero === 0 || imagem === '') {
       ToastAndroid.show("Revise suas informações", ToastAndroid.SHORT)
       return
     }
@@ -69,26 +85,26 @@ export default function AdicionarProduto(props) {
     const categorias = categoriasSelecionadas
       .filter(categoria => categoria.selecionada)
       .map(categoria => categoria.id)
-    axios.post(getApiUrl()+'/new_product', {
-      nome,
-      preco: precoNumero,
-      descricao: 'salve',
-      categorias,
-      usuario: id
-    },{
-      headers: { token }
+    
+    const form = new FormData()
+    form.append('nome', nome)
+    form.append('descricao', 'salve')
+    form.append('categorias', JSON.stringify(categorias))
+    form.append('usuario', id)
+    form.append('preco', precoNumero)
+    form.append('imagem', {uri: imagem.uri, type: 'image/jpg', name: 'image.jpg'})
+
+    axios.post(getApiUrl()+'/new_product', form, {
+      headers: { 
+        'Content-Type': "multipart/form-data; charset=utf-8;",
+        token,
+       }
     }).then(res => {
-      const data = res.data
-      if(data.status !== 'sucesso') {
-        console.log(data)
-      } else {
-        ToastAndroid.show('Produto adicionado!', ToastAndroid.SHORT)
+      if(res.data.status === 'sucesso') {
+        ToastAndroid.show('Sucesso!', ToastAndroid.SHORT)
         props.navigation.pop()
       }
-    }).catch(err => {
-        ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
-        console.log(err)
-      })
+    }).catch(err => console.log(err))
   }
 
   return (
@@ -132,6 +148,7 @@ export default function AdicionarProduto(props) {
             ))
         }
       </View>
+      <Button title="Carregar imagem" onPress={uploadImage} />
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Button title="Adicionar" onPress={() => adicionarProduto()}/>
       </View>
