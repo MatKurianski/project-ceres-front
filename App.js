@@ -24,6 +24,7 @@ import Perfil from './components/Pages/Perfil'
 import Config from './components/Pages/Config'
 import Register from './components/Pages/Register'
 import AdicionarProduto from './components/Pages/AdicionarProduto'
+import Products from './components/Pages/Products'
 
 import * as Font from 'expo-font'
 
@@ -139,6 +140,10 @@ const MainStack = createStackNavigator({
   AdicionarProduto: {
     screen: AdicionarProduto,
     navigationOptions: backWhiteHeaderAndTitle('Adicionando produto')
+  },
+  Produtos: {
+    screen: Products,
+    // navigationOptions: backWhiteHeaderAndTitle('Produtos')
   }
 })
 
@@ -183,7 +188,6 @@ function App() {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <AppBar />
         <SearchBar />
         <CategoriesSection />
         <Sections />

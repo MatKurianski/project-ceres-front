@@ -1,34 +1,27 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import CategoryCard from './../Cards/CategoryCard'
 import SectionHeader from './../Sections/SectionHeader'
+import { getApiUrl } from './../../assets/config'
+import axios from 'axios'
+import { withNavigation } from 'react-navigation'
 
-export default function CategoriesSection() {
-    const categories = [
-        {
-            name: 'Japonesa',
-            image: require('./../../assets/categories/japanese.jpeg')
-        },
-        {
-            name: 'Salgados',
-            image: require('./../../assets/categories/salgados.png')
-        },
-        {
-            name: 'Veganos',
-            image: require('./../../assets/categories/veganos.jpg')
-        },
-        {
-            name: 'Doces',
-            image: require('./../../assets/categories/doces.png')
-        },
-        {
-            name: 'Massas',
-            image: require('./../../assets/categories/massas.jpg')
-        },
-    ]
+function CategoriesSection(props) {
+    const [categories, setCategories] = React.useState([])
 
-    const categoriesCards = categories.map((card, index) => (
-        <CategoryCard name={card.name} key={card.name+index} image={card.image} />
+    React.useEffect(() => {
+      axios.get(getApiUrl()+'/categories')
+        .then(res => {
+          const _categories = res.data
+          setCategories(_categories)
+        })
+    }, [])
+
+    const categoriesCards = categories.map(categoria => (
+      <CategoryCard name={categoria.nomecategoria} key={categoria.idCategoria} onPress={() => props.navigation.navigate('Produtos', {
+        title: 'Categoria: '+categoria.nomecategoria,
+        query: '/products/?categoryId='+categoria.idCategoria
+      })} />
     ))
 
     return (
@@ -56,3 +49,5 @@ const styles = StyleSheet.create({
         marginHorizontal: 20
     }
 })
+
+export default withNavigation(CategoriesSection)

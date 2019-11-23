@@ -3,7 +3,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import CustomText from './../Custom/CustomText'
 import SellerStatusBadge from './../Badges/SellerStatusBadge'
 
-export default function FoodCard(props) {
+export default function ProductCard(props) {
   return (
     <View style={styles.foodcard}>
         <View style={{height: 100, width: 100, justifyContent: 'center', alignItems: 'center'}}>
@@ -29,7 +29,6 @@ export default function FoodCard(props) {
 
 const styles = StyleSheet.create({
     foodcard: {
-        flex: 1,
         flexDirection: 'row',
         height: 100,
         borderWidth: 0.8,
