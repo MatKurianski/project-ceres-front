@@ -28,6 +28,8 @@ function Products(props) {
 
   React.useEffect(() => {
     getProducts()
+    const listener1 = props.navigation.addListener('didFocus', getProducts)
+    return listener1.remove
   }, [])
 
   return (
