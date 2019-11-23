@@ -9,7 +9,7 @@ import request from '../../actions/request'
 function Products(props) {
   const [produtos, setProdutos] = React.useState([])
   const [isRefreshing, setRefreshing] = React.useState(false)
-  const primeiraReq = React.useRef(true)
+  const [primeiraReq, setPrimeiraReq] = React.useState(true)
 
   const getProducts = async () => {
     const query = props.navigation.getParam('query')
@@ -22,20 +22,23 @@ function Products(props) {
       .catch(err => console.err())
       .finally(() => {
         setRefreshing(false)
-        primeiraReq.current = false
+        setPrimeiraReq(false)
       })
   }
 
   React.useEffect(() => {
     getProducts()
-    const listener1 = props.navigation.addListener('didFocus', getProducts)
-    return listener1.remove
   }, [])
+
+  React.useEffect(() => {
+    const listener1 = props.navigation.addListener('willFocus', getProducts)
+    return listener1.remove
+  }, [primeiraReq])
 
   return (
     <View style={styles.container}>
       {
-        produtos.length > 0 || primeiraReq.current ? 
+        produtos.length > 0 || primeiraReq ? 
         <FlatList 
         data={produtos}
         renderItem={({item}) => <ProductCard title={item.nome} image={{uri: item.imagem}} price={item.preco}/>}
