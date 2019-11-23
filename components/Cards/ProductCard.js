@@ -9,7 +9,7 @@ export default function ProductCard(props) {
         <View style={{height: 100, width: 100, justifyContent: 'center', alignItems: 'center'}}>
             <Image
                 resizeMode='stretch'
-                style={{width: 70, height: 70}}
+                style={{width: 75, height: 75, borderRadius: 15}}
                 source={props.image}
             />
         </View>

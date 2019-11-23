@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyboardAvoidingView, ToastAndroid, StyleSheet, TextInput, View, Button } from 'react-native'
+import { KeyboardAvoidingView, ToastAndroid, StyleSheet, TextInput, View, Button, ScrollView } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import { TextInputMask } from 'react-native-masked-text'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -15,7 +15,10 @@ export default function AdicionarProduto(props) {
   const [preco, setPreco] = React.useState(0)
   const [precoNumero, setPrecoNumero] = React.useState(0)
   const [imagem, setImagem] = React.useState('')
+  const [descricao, setDescricao] = React.useState('')
+  const [textoBotaoImagem, setTextoBotaoImagem] = React.useState('Carregar imagem')
   const [categoriasSelecionadas, setCategoriasSelecionadas] = React.useState([])
+  const [botaoAdicionarDesabilitado, setBotaoAdicionarDesabilitado] = React.useState(false)
 
   const { userData } = React.useContext(AuthCtx)
 
@@ -69,14 +72,16 @@ export default function AdicionarProduto(props) {
     });
     if(!imagem.cancelled) {
       setImagem(imagem)
+      setTextoBotaoImagem('Imagem carregada')
     }
   }
 
   function adicionarProduto() {
-    if(!nome || precoNumero === 0 || imagem === '') {
+    if(!nome || precoNumero === 0 || imagem === '' || descricao === '') {
       ToastAndroid.show("Revise suas informações", ToastAndroid.SHORT)
       return
     }
+    setBotaoAdicionarDesabilitado(true)
     const { token, id } = userData
     const categorias = categoriasSelecionadas
       .filter(categoria => categoria.selecionada)
@@ -84,10 +89,10 @@ export default function AdicionarProduto(props) {
     
     const form = new FormData()
     form.append('nome', nome)
-    form.append('descricao', 'salve')
     form.append('categorias', JSON.stringify(categorias))
     form.append('usuario', id)
     form.append('preco', precoNumero)
+    form.append('descricao', descricao)
     form.append('imagem', {uri: imagem.uri, type: 'image/jpg', name: 'image.jpg'})
 
     request('/new_product', {
@@ -101,11 +106,13 @@ export default function AdicionarProduto(props) {
         props.navigation.pop()
       }
     }).catch(err => console.log)
+    .finally(() => setBotaoAdicionarDesabilitado(false))
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <CustomText bold={true} style={styles.label}>
+    <ScrollView>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <CustomText bold={true} style={styles.label}>
         Nome do produto
       </CustomText>
       <TextInput 
@@ -126,6 +133,7 @@ export default function AdicionarProduto(props) {
         }}
         includeRawValueInChangeText={true}
         onChangeText={(text, rawText) => {
+          if(rawText > 999.99) return
           setPreco(text)
           setPrecoNumero(rawText)
         }}
@@ -144,11 +152,30 @@ export default function AdicionarProduto(props) {
             ))
         }
       </View>
-      <Button title="Carregar imagem" onPress={uploadImage} />
+      <CustomText bold={true} style={styles.label}>
+        Foto do produto
+      </CustomText>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Button title="Adicionar" onPress={() => adicionarProduto()}/>
+        <Button title={textoBotaoImagem} onPress={uploadImage} />
       </View>
-    </KeyboardAvoidingView>
+      <CustomText bold={true} style={styles.label}>
+        Descrição
+      </CustomText>
+      <View> 
+        <TextInput 
+          placeholder="Quanto mais explicar sobre o produto, melhor!" 
+          multiline={true} 
+          style={styles.descTextInput} 
+          numberOfLines={6}
+          value={descricao}
+          onChangeText={text => setDescricao(text)}
+        />
+      </View>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 20}}>
+        <Button disabled={botaoAdicionarDesabilitado} title="Adicionar Produto" onPress={() => adicionarProduto()}/>
+      </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 
@@ -174,5 +201,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     flex: 0,
     paddingVertical: 10,
+  },
+  descTextInput: {
+    borderWidth: 0.5,
+    borderColor: 'gray',
+    borderRadius: 5,
+    justifyContent: "flex-start",
+    alignItems: 'center',
+    textAlignVertical: 'top',
+    padding: 5
   }
 })
