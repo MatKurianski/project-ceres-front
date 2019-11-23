@@ -21,7 +21,7 @@ export default function ProductCard(props) {
                 </View>
                 <SellerStatusBadge online={props.online} style={styles.badge} />
             </View>
-            <CustomText style={styles.price}>{'R$ '+props.price}</CustomText>
+            <CustomText style={styles.price}>{'R$ '+props.price.toFixed(2)}</CustomText>
          </View>
     </View>
   );

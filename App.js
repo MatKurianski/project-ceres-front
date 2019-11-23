@@ -14,7 +14,7 @@ import { Notifications } from 'expo'
 import SearchBar from './components/SearchBar'
 
 import CategoriesSection from './components/Sections/CategoriesSection'
-import Sections from './components/Sections/Sections'
+import SectionHeader from './components/Sections/SectionHeader'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
@@ -189,7 +189,10 @@ function App() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <SearchBar />
         <CategoriesSection />
-        <Sections />
+        <SectionHeader>
+          Todos os produtos
+        </SectionHeader>
+        <Products />
       </ScrollView>
     </View>
   );

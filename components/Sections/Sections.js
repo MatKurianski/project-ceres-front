@@ -23,16 +23,6 @@ export default function Sections(props) {
 		}
 	]
 
-	const dataTop = [{
-		title: 'Macarrão - 2 Pessoas',
-		price: '25,00',
-		image: require('./../../assets/products/macarrao.jpg'),
-		seller: {
-				name: 'Homem Urso Porco',
-				online: false
-		}
-	}]
-
 	const dataAgain = [{
 		title: 'Combo 5 esfihas',
 		price: '7,99',
@@ -57,9 +47,6 @@ export default function Sections(props) {
 				{
 					title: 'Produtos de vendedores online agora!', data: dataOnline,
 				},
-				{
-					title: 'Os mais vendidos!', data: dataTop,
-				}
 			]}
 		/>
 	)
