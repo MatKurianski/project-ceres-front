@@ -3,8 +3,8 @@ import { useState, useContext } from 'react'
 import { KeyboardAvoidingView, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import { AuthCtx } from './../Context/Auth'
-import axios from 'axios'
-import { getApiUrl } from './../../assets/config'
+
+import request from './../../actions/request'
 
 export default function Login(props) {
   const [email, setEmail] = useState('')
@@ -13,11 +13,11 @@ export default function Login(props) {
 
   function logar(props) {
     if(email.length <= 0 || senha.length <= 0) return
-    axios.post(getApiUrl()+'/login', {
-      email,
-      senha
-    }, {
-      timeout: 5000
+    request('/login', {
+      body: {
+        email, senha
+      },
+      method: 'POST'
     })
     .then(res => {
       const { status, ...userData } = res.data
@@ -29,10 +29,7 @@ export default function Login(props) {
         ToastAndroid.show(userData.mensagem, ToastAndroid.SHORT)
       }
     })
-    .catch(e => {
-      ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
-      console.log(e)
-    })
+    .catch(e => {})
     .finally(clearInputs)
   }
 

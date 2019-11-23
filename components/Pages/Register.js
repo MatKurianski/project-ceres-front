@@ -2,8 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
-import axios from 'axios'
-import { getApiUrl } from './../../assets/config'
+import request from './../../actions/request'
 
 export default function Login(props) {
   const [nome, setNome] = useState('')
@@ -11,23 +10,26 @@ export default function Login(props) {
   const [senha, setSenha] = useState('')
 
   function registrar(props) {
-    axios.post(getApiUrl()+'/register', {
-      nome,
-      email,
-      senha
-    })
-    .then(res => {
-      const { status, ...userData } = res.data
-      if (status === "sucesso") {
-        ToastAndroid.show('Registrado com sucesso!', ToastAndroid.LONG);
-        props.navigation.pop()
+    if(nome === '' || email === '' || senha === '') {
+      ToastAndroid.show('Faltam informações')
+      return
+    }
+    request('/register', {
+      method: 'POST',
+      body: {
+        nome,
+        email,
+        senha
       }
-    })
-    .catch(e => {
-      ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
-      console.log(e)
-    })
-    .finally(clearInputs)
+    }).then(res => {
+        const { status } = res.data
+        if (status === "sucesso") {
+          ToastAndroid.show('Registrado com sucesso!', ToastAndroid.LONG);
+          props.navigation.pop()
+        }
+      })
+      .catch(e => {})
+      .finally(clearInputs)
   }
 
   function clearInputs() {

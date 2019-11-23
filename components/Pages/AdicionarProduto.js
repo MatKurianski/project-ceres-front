@@ -3,9 +3,8 @@ import { KeyboardAvoidingView, ToastAndroid, StyleSheet, TextInput, View, Button
 import CustomText from './../Custom/CustomText'
 import { TextInputMask } from 'react-native-masked-text'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { getApiUrl } from './../../assets/config'
 import { AuthCtx } from './../Context/Auth'
-import axios from 'axios'
+import request from './../../actions/request'
 
 import * as ImagePicker from 'expo-image-picker'
 
@@ -21,7 +20,7 @@ export default function AdicionarProduto(props) {
   const { userData } = React.useContext(AuthCtx)
 
   React.useEffect(() => {
-    axios.get(getApiUrl()+'/categories')
+    request('/categories')
       .then(res => {
         const categorias = res.data
         const categoriasState = categorias.map(categoria => ({
@@ -31,10 +30,7 @@ export default function AdicionarProduto(props) {
         }))
         setCategoriasSelecionadas(categoriasState)
       })
-      .catch(e => {
-        ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
-        console.log(e)
-      })
+      .catch(e => {})
   }, [])
 
   const toggleSelected = categoriaNome => {
@@ -94,17 +90,17 @@ export default function AdicionarProduto(props) {
     form.append('preco', precoNumero)
     form.append('imagem', {uri: imagem.uri, type: 'image/jpg', name: 'image.jpg'})
 
-    axios.post(getApiUrl()+'/new_product', form, {
-      headers: { 
-        'Content-Type': "multipart/form-data; charset=utf-8;",
-        token,
-       }
+    request('/new_product', {
+      method: 'POST',
+      formdata: true,
+      body: form,
+      token
     }).then(res => {
       if(res.data.status === 'sucesso') {
         ToastAndroid.show('Sucesso!', ToastAndroid.SHORT)
         props.navigation.pop()
       }
-    }).catch(err => console.log(err))
+    }).catch(err => console.log)
   }
 
   return (

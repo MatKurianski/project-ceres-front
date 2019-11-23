@@ -11,7 +11,6 @@ import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import { Notifications } from 'expo'
 
-import AppBar from './components/AppBar'
 import SearchBar from './components/SearchBar'
 
 import CategoriesSection from './components/Sections/CategoriesSection'

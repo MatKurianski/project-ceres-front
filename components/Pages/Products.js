@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, FlatList, ToastAndroid } from 'react-native'
+import { View, StyleSheet, FlatList } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { getApiUrl } from './../../assets/config'
-import axios from 'axios'
 import ProductCard from './../Cards/ProductCard'
 import CustomText from '../Custom/CustomText'
+import request from '../../actions/request'
 
 function Products(props) {
   const [produtos, setProdutos] = React.useState([])
@@ -14,15 +14,12 @@ function Products(props) {
   const getProducts = async () => {
     const query = props.navigation.getParam('query')
     setRefreshing(true)
-    axios.get(getApiUrl()+query)
+    request(query)
       .then(res => {
         res.data.forEach(produto => produto.imagem = getApiUrl() +'/uploads/produtos/'+ produto.imagem)
         setProdutos(res.data)
       })
-      .catch(err => {
-        ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
-        console.log(err)
-      })
+      .catch(err => console.err())
       .finally(() => {
         setRefreshing(false)
         primeiraReq.current = false
