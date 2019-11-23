@@ -16,7 +16,6 @@ export default function request(route, options={}) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      console.log('salve')
       resolve(
         await req(route, body, {
           headers: {
