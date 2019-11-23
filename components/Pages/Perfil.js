@@ -4,6 +4,7 @@ import {AuthCtx} from './../Context/Auth'
 import { withNavigationFocus } from 'react-navigation'
 import CustomText from './../Custom/CustomText'
 import LoginButton from './../Custom/LoginButton'
+import { getApiUrl } from './../../assets/config'
 
 const {width, height} = Dimensions.get('window')
 const imageHeight = (width / 2) - 30
@@ -39,6 +40,8 @@ const stylesOpcao = StyleSheet.create({
 
 function Perfil(props) {
   const {userData, signOut} = React.useContext(AuthCtx)
+  let fotoUrl = undefined
+  if(userData.logged) fotoUrl = getApiUrl() + '/uploads/vendedores/' + userData.foto
 
   const opcoes = [
     {
@@ -74,7 +77,7 @@ function Perfil(props) {
         <>
           <ScrollView showsVerticalScrollIndicator={false} style={styles.background}>
             <View style={styles.container}>
-              <View style={styles.profilePhoto} />
+              <Image style={styles.profilePhoto} source={{uri: fotoUrl}} />
               <View style={styles.profileInfo}>
                 <CustomText bold={true} style={styles.nome}>
                   {userData.nome}
@@ -112,7 +115,12 @@ function Perfil(props) {
           </ScrollView>
         </>
         :
-        <LoginButton title="Logar" />
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', padding: 15}}>
+          <CustomText style={{marginBottom: 12}}>
+            Você precisa estar logado para ver essa página
+          </CustomText>
+          <LoginButton title="Logar" />
+        </View>
       }
     </>
   )
@@ -135,13 +143,12 @@ const styles = StyleSheet.create({
   },
   profilePhoto: {
     position: 'absolute',
-    height: 90,
-    width: 90,
+    height: 95,
+    width: 95,
     backgroundColor: 'gray',
     top: -45,
     borderRadius: 15,
     alignSelf: 'center',
-    elevation: 3
   },
   profileInfo: {
     flex: 0,

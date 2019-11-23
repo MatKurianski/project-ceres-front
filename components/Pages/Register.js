@@ -1,26 +1,36 @@
 import React from 'react'
 import { useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
+import { KeyboardAvoidingView, View, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import request from './../../actions/request'
+
+import FormData from 'form-data'
+
+import * as ImagePicker from 'expo-image-picker'
 
 export default function Login(props) {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  const [foto, setFoto] = useState(undefined)
+  const [textoBotaoFoto, setTextoBotaoFoto] = useState("Upload de foto de perfil")
+  const [registrarDesativado, toggleRegistrarDesativado] = useState(false)
 
   function registrar(props) {
-    if(nome === '' || email === '' || senha === '') {
+    if(nome === '' || email === '' || senha === '' || !foto) {
       ToastAndroid.show('Faltam informações')
       return
     }
+    toggleRegistrarDesativado(true)
+    const form = new FormData()
+    form.append('nome', nome)
+    form.append('email', email)
+    form.append('senha', senha)
+    form.append('foto', {uri: foto.uri, type: 'image/jpg', name: 'image.jpg'})
     request('/register', {
       method: 'POST',
-      body: {
-        nome,
-        email,
-        senha
-      }
+      body: form,
+      formdata: true
     }).then(res => {
         const { status } = res.data
         if (status === "sucesso") {
@@ -28,8 +38,24 @@ export default function Login(props) {
           props.navigation.pop()
         }
       })
-      .catch(e => {})
-      .finally(clearInputs)
+      .catch(e => console.log(e))
+      .finally(() => {
+        clearInputs()
+        toggleRegistrarDesativado(false)
+      })
+  }
+
+  async function carregarFoto() {
+    const imagem = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1
+    })
+    if(!imagem.cancelled) {
+      setFoto(imagem)
+      setTextoBotaoFoto('Foto carregada')
+    }
   }
 
   function clearInputs() {
@@ -70,7 +96,10 @@ export default function Login(props) {
         style={{...styles.input, marginBottom: 25}}
         placeholder="Senha"
       />
-      <Button onPress={() => registrar(props)} title="Registre-se" />
+      <Button title={textoBotaoFoto} onPress={() => carregarFoto()} />
+      <View style={{marginTop: 15}} >
+      <Button disabled={registrarDesativado} onPress={() => registrar(props)} title="Registre-se" />
+      </View>
     </KeyboardAvoidingView>
   )
 }

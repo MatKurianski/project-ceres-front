@@ -10,9 +10,11 @@ export default function Login(props) {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const { signIn } = useContext(AuthCtx)
+  const [botaoLogarDesativado, setBotaoLogarDesativado] = useState(false)
 
   function logar(props) {
     if(email.length <= 0 || senha.length <= 0) return
+    setBotaoLogarDesativado(true)
     request('/login', {
       body: {
         email, senha
@@ -30,7 +32,10 @@ export default function Login(props) {
       }
     })
     .catch(e => {})
-    .finally(clearInputs)
+    .finally(() => {
+      clearInputs()
+      setBotaoLogarDesativado(false)
+    })
   }
 
   function clearInputs() {
@@ -64,12 +69,9 @@ export default function Login(props) {
         style={{...styles.input, marginBottom: 25}}
         placeholder="Senha"
       />
-      <Button onPress={() => logar(props)} title="Logar" />
+      <Button disabled={botaoLogarDesativado} onPress={() => logar(props)} title="Logar" />
       <CustomText onPress={() => props.navigation.navigate('Register')} style={styles.opcoesFinais}>
         Não tenho conta (cadastrar)
-      </CustomText>
-      <CustomText style={styles.opcoesFinais}>
-        Esqueci minha senha
       </CustomText>
     </KeyboardAvoidingView>
   )
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     textAlign: 'center',
     width: '100%',
-    fontSize: 12,
-    marginTop: 20
+    fontSize: 14,
+    marginTop: 25
   }
 })

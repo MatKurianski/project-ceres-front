@@ -14,7 +14,7 @@ export default function AdicionarProduto(props) {
   const [nome, setNome] = React.useState('')
   const [preco, setPreco] = React.useState(0)
   const [precoNumero, setPrecoNumero] = React.useState(0)
-  const [imagem, setImage] = React.useState('')
+  const [imagem, setImagem] = React.useState('')
   const [categoriasSelecionadas, setCategoriasSelecionadas] = React.useState([])
 
   const { userData } = React.useContext(AuthCtx)
@@ -62,13 +62,13 @@ export default function AdicionarProduto(props) {
 
   async function uploadImage() {
     const imagem = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1
     });
     if(!imagem.cancelled) {
-      setImage(imagem)
+      setImagem(imagem)
     }
   }
 
