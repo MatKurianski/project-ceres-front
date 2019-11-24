@@ -1,20 +1,22 @@
 import React from 'react'
 import { useState } from 'react'
-import { KeyboardAvoidingView, View, StyleSheet, Button, Image, ToastAndroid } from 'react-native'
+import { KeyboardAvoidingView, View, StyleSheet, Image, ToastAndroid, ScrollView } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import request from './../../actions/request'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import FormData from 'form-data'
 
 import * as ImagePicker from 'expo-image-picker'
 import CustomTextInput from '../Custom/CustomTextInput'
+import CustomButton from '../Custom/CustomButton'
 
 export default function Login(props) {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [foto, setFoto] = useState(undefined)
-  const [textoBotaoFoto, setTextoBotaoFoto] = useState("Upload de foto de perfil")
+  const [textoBotaoFoto, setTextoBotaoFoto] = useState("UPLOAD DE FOTO DE PERFIL")
   const [registrarDesativado, toggleRegistrarDesativado] = useState(false)
 
   function registrar(props) {
@@ -55,7 +57,7 @@ export default function Login(props) {
     })
     if(!imagem.cancelled) {
       setFoto(imagem)
-      setTextoBotaoFoto('Foto carregada')
+      setTextoBotaoFoto('FOTO CARREGADA')
     }
   }
 
@@ -66,42 +68,47 @@ export default function Login(props) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Image style={styles.comidas} source={require('../../assets/logo/comidas.png')} />
-      <CustomText bold={true} style={styles.title}>
-        Registre-se!
-      </CustomText>
-      <CustomText style={styles.subtitle}>
-        E comece agora mesmo a vender seus produtos!
-      </CustomText>
-      <CustomTextInput 
-        onChangeText={text => setNome(text)}
-        value={nome} 
-        style={styles.input} 
-        placeholder="Seu nome"
-      />
-      <CustomTextInput 
-        onChangeText={text => setEmail(text)}
-        value={email} 
-        textContentType="emailAddress" 
-        type="emailAddress" 
-        style={styles.input} 
-        placeholder="Email"
-      />
-      <CustomTextInput
-        onChangeText={text => setSenha(text)}
-        value={senha}
-        secureTextEntry={true}
-        textContentType="password"
-        type="password"
-        style={{...styles.input, marginBottom: 25}}
-        placeholder="Senha"
-      />
-      <Button title={textoBotaoFoto} onPress={() => carregarFoto()} />
-      <View style={{marginTop: 15}} >
-      <Button disabled={registrarDesativado} onPress={() => registrar(props)} title="Registre-se" />
-      </View>
-    </KeyboardAvoidingView>
+    <ScrollView>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <Image style={styles.comidas} source={require('../../assets/logo/comidas.png')} />
+        <CustomText bold={true} style={styles.title}>
+          Registre-se!
+        </CustomText>
+        <CustomText style={styles.subtitle}>
+          E comece agora mesmo a vender seus produtos!
+        </CustomText>
+        <CustomTextInput 
+          onChangeText={text => setNome(text)}
+          value={nome} 
+          style={styles.input} 
+          placeholder="Seu nome"
+        />
+        <CustomTextInput 
+          onChangeText={text => setEmail(text)}
+          value={email} 
+          textContentType="emailAddress" 
+          type="emailAddress" 
+          style={styles.input} 
+          placeholder="Email"
+        />
+        <CustomTextInput
+          onChangeText={text => setSenha(text)}
+          value={senha}
+          secureTextEntry={true}
+          textContentType="password"
+          type="password"
+          style={{...styles.input, marginBottom: 25}}
+          placeholder="Senha"
+        />
+        <CustomButton onPress={() => carregarFoto()} >
+          <MaterialCommunityIcons name="upload" size={18} color="white" />
+          {textoBotaoFoto}
+        </CustomButton>
+        <View style={{marginTop: 16}} >
+        <CustomButton title="Registre-se" disabled={registrarDesativado} onPress={() => registrar(props)} />
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 

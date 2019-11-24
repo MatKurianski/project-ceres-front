@@ -1,15 +1,17 @@
 import React from 'react'
-import { KeyboardAvoidingView, ToastAndroid, StyleSheet, View, Button, ScrollView } from 'react-native'
+import { KeyboardAvoidingView, ToastAndroid, StyleSheet, View, ScrollView } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import { TextInputMask } from 'react-native-masked-text'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { AuthCtx } from './../Context/Auth'
 import request from './../../actions/request'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker'
 
 import FormData from 'form-data'
 import CustomTextInput from '../Custom/CustomTextInput'
+import CustomButton from '../Custom/CustomButton'
 
 export default function AdicionarProduto(props) {
   const [nome, setNome] = React.useState('')
@@ -17,7 +19,7 @@ export default function AdicionarProduto(props) {
   const [precoNumero, setPrecoNumero] = React.useState(0)
   const [imagem, setImagem] = React.useState('')
   const [descricao, setDescricao] = React.useState('')
-  const [textoBotaoImagem, setTextoBotaoImagem] = React.useState('Carregar imagem')
+  const [textoBotaoImagem, setTextoBotaoImagem] = React.useState('CARREGAR FOTO')
   const [categoriasSelecionadas, setCategoriasSelecionadas] = React.useState([])
   const [botaoAdicionarDesabilitado, setBotaoAdicionarDesabilitado] = React.useState(false)
 
@@ -73,7 +75,7 @@ export default function AdicionarProduto(props) {
     });
     if(!imagem.cancelled) {
       setImagem(imagem)
-      setTextoBotaoImagem('Imagem carregada')
+      setTextoBotaoImagem('FOTO CARREGADA')
     }
   }
 
@@ -158,7 +160,10 @@ export default function AdicionarProduto(props) {
         Foto do produto
       </CustomText>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Button title={textoBotaoImagem} onPress={uploadImage} />
+        <CustomButton onPress={uploadImage} >
+          <MaterialCommunityIcons name="upload" size={18} color="white" />
+          {textoBotaoImagem}
+        </CustomButton>
       </View>
       <CustomText style={styles.label}>
         Descrição
@@ -174,7 +179,7 @@ export default function AdicionarProduto(props) {
         />
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 20}}>
-        <Button disabled={botaoAdicionarDesabilitado} title="Adicionar Produto" onPress={() => adicionarProduto()}/>
+        <CustomButton disabled={botaoAdicionarDesabilitado} title="Adicionar Produto" onPress={() => adicionarProduto()}/>
       </View>
       </KeyboardAvoidingView>
     </ScrollView>

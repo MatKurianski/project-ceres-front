@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState, useContext } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Button, Image, ToastAndroid } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import CustomTextInput from './../Custom/CustomTextInput'
 import { AuthCtx } from './../Context/Auth'
 
 import request from './../../actions/request'
+import CustomButton from '../Custom/CustomButton'
 
 export default function Login(props) {
   const [email, setEmail] = useState('')
@@ -70,7 +71,7 @@ export default function Login(props) {
         style={{...styles.input, marginBottom: 25}}
         placeholder="Senha"
       />
-      <Button disabled={botaoLogarDesativado} onPress={() => logar(props)} title="Logar" />
+      <CustomButton disabled={botaoLogarDesativado} onPress={() => logar(props)} title="Logar" />
       <CustomText onPress={() => props.navigation.navigate('Register')} style={styles.opcoesFinais}>
         Não tenho conta (cadastrar)
       </CustomText>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   opcoesFinais: {
-    color: 'blue',
+    color: 'tomato',
     textAlign: 'center',
     width: '100%',
     fontSize: 14,

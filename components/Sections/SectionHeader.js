@@ -12,8 +12,8 @@ export default function SectionHeader({children, style, ...otherProps}) {
 
 const styles = StyleSheet.create({
     text: {
-        marginVertical: 15,
-        marginHorizontal: 5,
-        fontSize: 14
+        marginVertical: 12,
+        marginHorizontal: 6,
+        fontSize: 16
     },
 })

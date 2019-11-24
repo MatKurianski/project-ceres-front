@@ -15,8 +15,8 @@ export default function ProductCard(props) {
         </View>
          <View style={styles.textArea}>
             <View style={styles.desc}>
-                <View style={styles.title}>
-                    <CustomText numberOfLines={1} >{props.title}</CustomText>
+                <View style={styles.titleArea}>
+                    <CustomText style={styles.titleText} numberOfLines={1} >{props.title}</CustomText>
                     <CustomText numberOfLines={1} italic={true} >{props.seller}</CustomText>
                 </View>
                 <SellerStatusBadge online={props.online} style={styles.badge} />
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         borderColor: '#E0E0E0',
         borderRadius: 5,
         backgroundColor: '#fff',
-        marginBottom: 5
+        marginBottom: 8,
+        elevation: 2
     },
     desc: {
         flex: 1
@@ -48,9 +49,11 @@ const styles = StyleSheet.create({
     badge: {
         flex: 0
     },
-    title: {
-      flex: 1,
-      fontSize: 16
+    titleArea: {
+      flex: 1
+    },
+    titleText: {
+      fontSize: 14
     },
     price: {
         flex: 0,

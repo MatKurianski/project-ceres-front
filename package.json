@@ -13,6 +13,7 @@
     "expo-background-fetch": "~7.0.0",
     "expo-constants": "^7.0.1",
     "expo-font": "~7.0.0",
+    "expo-image-picker": "~7.0.0",
     "expo-task-manager": "~7.0.0",
     "form-data": "^3.0.0",
     "react": "16.8.3",
@@ -24,8 +25,7 @@
     "react-native-web": "^0.11.7",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.10.3",
-    "react-navigation-tabs": "^2.6.0",
-    "expo-image-picker": "~7.0.0"
+    "react-navigation-tabs": "^2.6.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^7.1.0"

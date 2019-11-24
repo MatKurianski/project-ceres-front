@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button } from 'react-native'
 import { withNavigation } from 'react-navigation'
+import CustomButton from './CustomButton'
 
 function LoginButton(props) {
   return (
-    <Button {...props} onPress={() => props.navigation.navigate('Login')} />
+    <CustomButton {...props} onPress={() => props.navigation.navigate('Login')} />
   )
 } 
 
