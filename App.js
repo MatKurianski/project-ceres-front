@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Pages/Login'
-import { StyleSheet, AsyncStorage, View, ScrollView } from 'react-native';
+import { AsyncStorage, View, Text } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -11,14 +11,9 @@ import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import { Notifications } from 'expo'
 
-import SearchBar from './components/SearchBar'
-
-import CategoriesSection from './components/Sections/CategoriesSection'
-import SectionHeader from './components/Sections/SectionHeader'
-
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
-import { AuthContext, AuthCtx, TOKEN_KEY } from './components/Context/Auth'
+import { AuthContext, TOKEN_KEY } from './components/Context/Auth'
 import Perfil from './components/Pages/Perfil'
 import Config from './components/Pages/Config'
 import Register from './components/Pages/Register'
@@ -27,6 +22,7 @@ import Products from './components/Pages/Products'
 
 import * as Font from 'expo-font'
 import request from './actions/request';
+import Home from './components/Pages/Home';
 
 const task = "EACH"
 
@@ -84,7 +80,7 @@ iniciarGeolocalizacao()
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
-    Home: App,
+    Home: Home,
     Perfil: Perfil,
     Config: Config
   },
@@ -114,7 +110,11 @@ const BottomTabNavigator = createBottomTabNavigator(
         },
         tabBarOptions: {
           activeTintColor: 'tomato',
-          inactiveTintColor: 'gray'
+          inactiveTintColor: 'gray',
+          labelStyle: {
+            fontFamily: 'ubuntu',
+            fontSize: 12
+          }
         },
     }),
   },
@@ -132,10 +132,15 @@ const backWhiteHeader = () => ({
 
 const backWhiteHeaderAndTitle = (title) => {
   const res = backWhiteHeader()
+  console.log(res)
 
   return () => ({
     title,
-    ...res
+    ...res,
+    headerTitleStyle: {
+      fontFamily: 'ubuntu',
+      fontWeight: "200"
+    }
   })
 }
 
@@ -159,8 +164,7 @@ const MainStack = createStackNavigator({
     navigationOptions: backWhiteHeaderAndTitle('Adicionando produto')
   },
   Produtos: {
-    screen: Products,
-    // navigationOptions: backWhiteHeaderAndTitle('Produtos')
+    screen: Products
   }
 })
 
@@ -172,59 +176,32 @@ const MainStackWithAuth = props => (
 
 MainStackWithAuth.router = MainStack.router;
 
-function App() {
+export default function App (props) {
   const [fontLoaded, setFontLoaded] = React.useState(false)
-  const { setUserData } = React.useContext(AuthCtx)
 
   React.useEffect(() => {
     if(!fontLoaded) {
       async function loadFont() {
         return await Font.loadAsync({
-          'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-          'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-          'open-sans-italic': require('./assets/fonts/OpenSans-Italic.ttf'),
-          'open-sans-bold-italic': require('./assets/fonts/OpenSans-BoldItalic.ttf'),
+          'ubuntu': require('./assets/fonts/ubuntu/Ubuntu-Regular.ttf'),
+          'ubuntu-bold': require('./assets/fonts/ubuntu/Ubuntu-Bold.ttf'),
+          'ubuntu-italic': require('./assets/fonts/ubuntu/Ubuntu-Italic.ttf'),
+          'ubuntu-bold-italic': require('./assets/fonts/ubuntu/Ubuntu-BoldItalic.ttf'),
         });
       }
       loadFont().then(() => {
         setFontLoaded(true)
       })
-
-      AsyncStorage.getItem(TOKEN_KEY)
-        .then(item => {
-          itemObject = JSON.parse(item)
-          if (itemObject === null) return
-          setUserData({logged: true, ...itemObject})
-        })
-        .catch(e => {})
     }
   }, [])
+  
+  const AppReady = createAppContainer(MainStackWithAuth)
 
-  if(!fontLoaded) return null
-
-  return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <SearchBar />
-        <CategoriesSection />
-        <SectionHeader>
-          Todos os produtos
-        </SectionHeader>
-        <Products />
-      </ScrollView>
+  return fontLoaded  ? <AppReady /> : (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{textAlign: 'center'}}>
+        Carregando...
+      </Text>
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 8
-  },
-  title: {
-      fontSize: 28
-  }
-});
-
-export default createAppContainer(MainStackWithAuth);

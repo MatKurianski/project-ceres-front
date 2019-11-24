@@ -1,12 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
-import { KeyboardAvoidingView, View, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
+import { KeyboardAvoidingView, View, StyleSheet, Button, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import request from './../../actions/request'
 
 import FormData from 'form-data'
 
 import * as ImagePicker from 'expo-image-picker'
+import CustomTextInput from '../Custom/CustomTextInput'
 
 export default function Login(props) {
   const [nome, setNome] = useState('')
@@ -73,13 +74,13 @@ export default function Login(props) {
       <CustomText style={styles.subtitle}>
         E comece agora mesmo a vender seus produtos!
       </CustomText>
-      <TextInput 
+      <CustomTextInput 
         onChangeText={text => setNome(text)}
         value={nome} 
         style={styles.input} 
         placeholder="Seu nome"
       />
-      <TextInput 
+      <CustomTextInput 
         onChangeText={text => setEmail(text)}
         value={email} 
         textContentType="emailAddress" 
@@ -87,7 +88,7 @@ export default function Login(props) {
         style={styles.input} 
         placeholder="Email"
       />
-      <TextInput
+      <CustomTextInput
         onChangeText={text => setSenha(text)}
         value={senha}
         secureTextEntry={true}

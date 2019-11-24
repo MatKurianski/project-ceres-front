@@ -6,7 +6,7 @@ export default function SearchBar() {
   return (
     <View style={styles.searchbar}>
       <Ionicons name="ios-search" style={{padding: 10}} size={28} color="grey" />
-      <TextInput style={{flex: 1}} placeholder="Pesquise um produto aqui!" placeholderTextColor="grey"/>
+      <TextInput style={styles.searchbar_text} placeholder placeholder="Pesquise um produto aqui!" placeholderTextColor="grey"/>
     </View>
   );
 }
@@ -21,8 +21,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
     padding: 5,
     borderRadius: 5,
-    fontFamily: 'open-sans'
+  },
+  searchbar_text: {
+    flex: 1,
+    fontFamily: 'ubuntu'
   }
 });
-
 

@@ -16,7 +16,7 @@ export default function ProductCard(props) {
          <View style={styles.textArea}>
             <View style={styles.desc}>
                 <View style={styles.title}>
-                    <CustomText numberOfLines={1} bold={true} >{props.title}</CustomText>
+                    <CustomText numberOfLines={1} >{props.title}</CustomText>
                     <CustomText numberOfLines={1} italic={true} >{props.seller}</CustomText>
                 </View>
                 <SellerStatusBadge online={props.online} style={styles.badge} />
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
         flex: 0
     },
     title: {
-        flex: 1
+      flex: 1,
+      fontSize: 16
     },
     price: {
         flex: 0,

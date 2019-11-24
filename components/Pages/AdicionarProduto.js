@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyboardAvoidingView, ToastAndroid, StyleSheet, TextInput, View, Button, ScrollView } from 'react-native'
+import { KeyboardAvoidingView, ToastAndroid, StyleSheet, View, Button, ScrollView } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import { TextInputMask } from 'react-native-masked-text'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -9,6 +9,7 @@ import request from './../../actions/request'
 import * as ImagePicker from 'expo-image-picker'
 
 import FormData from 'form-data'
+import CustomTextInput from '../Custom/CustomTextInput'
 
 export default function AdicionarProduto(props) {
   const [nome, setNome] = React.useState('')
@@ -112,16 +113,16 @@ export default function AdicionarProduto(props) {
   return (
     <ScrollView>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <CustomText bold={true} style={styles.label}>
+        <CustomText style={styles.label}>
         Nome do produto
       </CustomText>
-      <TextInput 
+      <CustomTextInput 
         style={styles.input} 
           value={nome} 
           placeholder="Ex: Cone trufado, bolo de cenoura..." 
           onChangeText={text => setNome(text)}
         />
-      <CustomText bold={true} style={styles.label}>
+      <CustomText style={styles.label}>
         Preço
       </CustomText>
       <TextInputMask
@@ -129,7 +130,8 @@ export default function AdicionarProduto(props) {
         value={preco} 
         style={{
           fontSize: 20,
-          textAlign: 'center'
+          textAlign: 'center',
+          fontFamily: 'ubuntu'
         }}
         includeRawValueInChangeText={true}
         onChangeText={(text, rawText) => {
@@ -138,7 +140,7 @@ export default function AdicionarProduto(props) {
           setPrecoNumero(rawText)
         }}
       />
-      <CustomText bold={true} style={styles.label}>
+      <CustomText style={styles.label}>
         Categorias
       </CustomText>
       <View style={styles.categories}>
@@ -152,17 +154,17 @@ export default function AdicionarProduto(props) {
             ))
         }
       </View>
-      <CustomText bold={true} style={styles.label}>
+      <CustomText style={styles.label}>
         Foto do produto
       </CustomText>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Button title={textoBotaoImagem} onPress={uploadImage} />
       </View>
-      <CustomText bold={true} style={styles.label}>
+      <CustomText style={styles.label}>
         Descrição
       </CustomText>
       <View> 
-        <TextInput 
+        <CustomTextInput 
           placeholder="Quanto mais explicar sobre o produto, melhor!" 
           multiline={true} 
           style={styles.descTextInput} 
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    marginVertical: 16
+    marginVertical: 18
   },
   input: {
     paddingHorizontal: 10,
@@ -209,6 +211,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: 'center',
     textAlignVertical: 'top',
-    padding: 5
+    padding: 10
   }
 })

@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from 'react-native'
 
 export default function CustomText(props) {
-    let fontFamily = 'open-sans'
+    let fontFamily = 'ubuntu'
     if(props.bold) fontFamily += '-bold'
     if(props.italic) fontFamily += '-italic'
 

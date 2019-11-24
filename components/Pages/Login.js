@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useContext } from 'react'
-import { KeyboardAvoidingView, StyleSheet, TextInput, Button, Image, ToastAndroid } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Button, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
+import CustomTextInput from './../Custom/CustomTextInput'
 import { AuthCtx } from './../Context/Auth'
 
 import request from './../../actions/request'
@@ -52,7 +53,7 @@ export default function Login(props) {
       <CustomText style={styles.subtitle}>
         Para anunciar produtos, é necessário que você esteja logado
       </CustomText>
-      <TextInput 
+      <CustomTextInput 
         onChangeText={text => setEmail(text)}
         value={email} 
         textContentType="emailAddress" 
@@ -60,7 +61,7 @@ export default function Login(props) {
         style={styles.input} 
         placeholder="Email"
       />
-      <TextInput
+      <CustomTextInput
         onChangeText={text => setSenha(text)}
         value={senha}
         secureTextEntry={true}

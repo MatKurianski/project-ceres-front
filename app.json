@@ -1,15 +1,13 @@
 {
   "expo": {
-    "name": "Project Ceres",
+    "name": "Comidinhas EACH",
     "slug": "project-ceres",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
-      "ios",
-      "android",
-      "web"
+      "android"
     ],
-    "version": "1.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/logo/icon.png",
     "splash": {
@@ -29,9 +27,6 @@
     },
     "assetBundlePatterns": [
       "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    }
+    ]
   }
 }
