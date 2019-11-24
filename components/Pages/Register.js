@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState } from 'react'
-import { KeyboardAvoidingView, View, StyleSheet, Image, ToastAndroid, ScrollView } from 'react-native'
+import { View, StyleSheet, Image, ToastAndroid} from 'react-native'
 import CustomText from './../Custom/CustomText'
 import request from './../../actions/request'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import FormData from 'form-data'
 
@@ -19,9 +20,9 @@ export default function Login(props) {
   const [textoBotaoFoto, setTextoBotaoFoto] = useState("UPLOAD DE FOTO DE PERFIL")
   const [registrarDesativado, toggleRegistrarDesativado] = useState(false)
 
-  function registrar(props) {
+  function registrar() {
     if(nome === '' || email === '' || senha === '' || !foto) {
-      ToastAndroid.show('Faltam informações')
+      ToastAndroid.show('Faltam informações', ToastAndroid.SHORT)
       return
     }
     toggleRegistrarDesativado(true)
@@ -68,8 +69,7 @@ export default function Login(props) {
   }
 
   return (
-    <ScrollView>
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAwareScrollView enableOnAndroid style={styles.container}  behavior="padding">
         <Image style={styles.comidas} source={require('../../assets/logo/comidas.png')} />
         <CustomText bold={true} style={styles.title}>
           Registre-se!
@@ -105,18 +105,16 @@ export default function Login(props) {
           {textoBotaoFoto}
         </CustomButton>
         <View style={{marginTop: 16}} >
-        <CustomButton title="Registre-se" disabled={registrarDesativado} onPress={() => registrar(props)} />
+        <CustomButton title="Registre-se" disabled={registrarDesativado} onPress={() => registrar()} />
         </View>
-      </KeyboardAvoidingView>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 15
+    padding: 15
   },
   title: {
     width: '100%',

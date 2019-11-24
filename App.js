@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Pages/Login'
-import { AsyncStorage, View, Text } from 'react-native';
+import { AsyncStorage, View, Text, Alert } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
-import { Notifications } from 'expo'
+import { Notifications, Updates } from 'expo'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
@@ -193,6 +193,31 @@ export default function App (props) {
         setFontLoaded(true)
       })
     }
+  }, [])
+
+  React.useEffect(() => {
+    Updates.checkForUpdateAsync()
+      .then(update => {
+        if (update.isAvailable) {
+          Updates.fetchUpdateAsync()
+            .then(() => {
+              Alert.alert(
+                'Atualização baixada',
+                'Deseja instalar agora?',
+                [
+                  {
+                    text: 'Não',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'Sim', onPress: () => Updates.reloadFromCache()},
+                ],
+                {cancelable: false},
+              );
+            });
+        }
+      })
+      .catch(e => {})    
   }, [])
   
   const AppReady = createAppContainer(MainStackWithAuth)

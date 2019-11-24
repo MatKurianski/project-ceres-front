@@ -12,6 +12,7 @@ import * as ImagePicker from 'expo-image-picker'
 import FormData from 'form-data'
 import CustomTextInput from '../Custom/CustomTextInput'
 import CustomButton from '../Custom/CustomButton'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function AdicionarProduto(props) {
   const [nome, setNome] = React.useState('')
@@ -113,8 +114,7 @@ export default function AdicionarProduto(props) {
   }
 
   return (
-    <ScrollView>
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAwareScrollView enableOnAndroid style={styles.container} behavior="padding">
         <CustomText style={styles.label}>
         Nome do produto
       </CustomText>
@@ -181,8 +181,7 @@ export default function AdicionarProduto(props) {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 20}}>
         <CustomButton disabled={botaoAdicionarDesabilitado} title="Adicionar Produto" onPress={() => adicionarProduto()}/>
       </View>
-      </KeyboardAvoidingView>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

@@ -1,12 +1,13 @@
 import React from 'react'
 import { useState, useContext } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Image, ToastAndroid } from 'react-native'
+import { StyleSheet, Image, ToastAndroid } from 'react-native'
 import CustomText from './../Custom/CustomText'
 import CustomTextInput from './../Custom/CustomTextInput'
 import { AuthCtx } from './../Context/Auth'
 
 import request from './../../actions/request'
 import CustomButton from '../Custom/CustomButton'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function Login(props) {
   const [email, setEmail] = useState('')
@@ -46,7 +47,7 @@ export default function Login(props) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAwareScrollView enableOnAndroid style={styles.container} behavior="padding">
       <Image style={styles.comidas} source={require('../../assets/logo/comidas.png')} />
       <CustomText bold={true} style={styles.title}>
         Faça login!
@@ -75,15 +76,15 @@ export default function Login(props) {
       <CustomText onPress={() => props.navigation.navigate('Register')} style={styles.opcoesFinais}>
         Não tenho conta (cadastrar)
       </CustomText>
-    </KeyboardAvoidingView>
+    </ KeyboardAwareScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 15
+    padding: 15,
+    paddingTop: 50
   },
   title: {
     width: '100%',

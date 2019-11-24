@@ -7,7 +7,7 @@ export default function CustomButton(props) {
 
   return (
     <TouchableOpacity style={styles.button} {...otherProps}>
-      <CustomText bold={true} style={{color: 'white', fontSize: 14, textAlign: 'center', textAlignVertical: 'center',...textStyle}} >
+      <CustomText bold={true} style={{color: 'white', fontSize: 14, textAlign: 'center', lineHeight: 15,textAlignVertical: 'center',...textStyle}} >
         {title ? title.toUpperCase() : children}
       </CustomText>
     </TouchableOpacity>
