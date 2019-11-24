@@ -3,7 +3,7 @@ import { getApiUrl } from './../assets/config'
 import { ToastAndroid } from 'react-native'
 
 export default function request(route, options={}) {
-  let { method, token, formdata, query, body} = options
+  let { method, token, formdata, query, body, disableConnectionErrorMessage} = options
   let contentType =  'application/json'
   if(formdata) contentType = "multipart/form-data; charset=utf-8;"
   route = getApiUrl() + route
@@ -26,7 +26,7 @@ export default function request(route, options={}) {
         })
       )
     } catch(e) {
-      ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
+      if(disableConnectionErrorMessage) ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
       reject(e)
     }
   })

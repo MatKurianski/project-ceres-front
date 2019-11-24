@@ -26,6 +26,7 @@ import AdicionarProduto from './components/Pages/AdicionarProduto'
 import Products from './components/Pages/Products'
 
 import * as Font from 'expo-font'
+import request from './actions/request';
 
 const task = "EACH"
 
@@ -40,6 +41,17 @@ TaskManager.defineTask(task, ({ data: { locations }, error }) => {
 
   if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {
     console.log('Está na EACH!')
+    AsyncStorage.getItem(TOKEN_KEY)
+      .then(userData => {
+        const { token } = JSON.parse(userData)
+        if(!token) return
+        request('/online', {
+          method: 'POST',
+          token,
+          disableConnectionErrorMessage: true
+        }).then(res => console.log(res.data))
+          .catch(e => {})
+      })
     if(!estaNaEACH) {
       Notifications.presentLocalNotificationAsync({
         title: 'Comidinhas EACH',
@@ -47,7 +59,15 @@ TaskManager.defineTask(task, ({ data: { locations }, error }) => {
       })
       estaNaEACH = true
     }
-  } else estaNaEACH = false
+  } else {
+    if(estaNaEACH) {
+      Notifications.presentLocalNotificationAsync({
+        title: 'Comidinhas EACH',
+        body: "Você saiu da EACH :("
+      })
+    }
+    estaNaEACH = false
+  }
 });
 
 const iniciarGeolocalizacao = () => {
