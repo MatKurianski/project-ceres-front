@@ -114,7 +114,7 @@ export default function AdicionarProduto(props) {
   }
 
   return (
-    <KeyboardAwareScrollView enableOnAndroid style={styles.container} behavior="padding">
+    <KeyboardAwareScrollView enableOnAndroid style={styles.container} extraScrollHeight={200} behavior="padding">
         <CustomText style={styles.label}>
         Nome do produto
       </CustomText>
@@ -178,7 +178,7 @@ export default function AdicionarProduto(props) {
           onChangeText={text => setDescricao(text)}
         />
       </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 20}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 40}}>
         <CustomButton disabled={botaoAdicionarDesabilitado} title="Adicionar Produto" onPress={() => adicionarProduto()}/>
       </View>
     </KeyboardAwareScrollView>
@@ -187,8 +187,9 @@ export default function AdicionarProduto(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 15
+    flex: 0,
+    padding: 15,
+    paddingBottom: 50
   },
   label: {
     fontSize: 18,
