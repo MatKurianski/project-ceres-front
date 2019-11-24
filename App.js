@@ -28,37 +28,35 @@ import Products from './components/Pages/Products'
 import * as Font from 'expo-font'
 
 const task = "EACH"
-TaskManager.defineTask(task, ({data: {eventType, region}, error}) => {
-  if(error){
-    console.log(error)
-    return
-  }
-  console.log('Ação engatilhada')
-  if (eventType === Location.GeofencingEventType.Enter) {
-    Notifications.presentLocalNotificationAsync({
-      title: 'Comidinhas EACH',
-      body: "Você está na EACH!"
-    })
-  } else if (eventType === Location.GeofencingEventType.Exit) {
-    Notifications.presentLocalNotificationAsync({
-      title: 'Comidinhas EACH',
-      body: "Você saiu da EACH!"
-    })
-  }
-})
+
+let estaNaEACH = false
+TaskManager.defineTask(task, ({ data: { locations }, error }) => {
+  if (error) return;
+
+  const EACH = { lat: 23.4823919, log: -46.502638 }
+  const radius = 0.002
+  const { latitude, longitude } = locations[locations.length-1].coords
+  const abs = Math.abs
+
+  if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {
+    console.log('Está na EACH!')
+    if(!estaNaEACH) {
+      Notifications.presentLocalNotificationAsync({
+        title: 'Comidinhas EACH',
+        body: "Você está na EACH!"
+      })
+      estaNaEACH = true
+    }
+  } else estaNaEACH = false
+});
 
 const iniciarGeolocalizacao = () => {
   Permissions.askAsync(Permissions.LOCATION)
     .then(res => {
       if(!res) return
-      Location.startGeofencingAsync(task, [
-        {
-          // Coordenadas da EACH
-          latitude: -23.4823919,
-          longitude: -46.5026385,
-          radius: 1000,
-        }
-      ])
+      Location.startLocationUpdatesAsync(task, {
+        timeInterval: 600000,
+      })
     })
 }
 
