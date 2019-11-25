@@ -41,7 +41,13 @@ function Products(props) {
         produtos.length > 0 || primeiraReq ? 
         <FlatList 
         data={produtos}
-        renderItem={({item}) => <ProductCard title={item.nome} image={{uri: item.imagem}} price={item.preco}/>}
+        renderItem={({item}) => <ProductCard 
+          title={item.nome}
+          image={{uri: item.imagem}}
+          price={item.preco}
+          online={item.vendedor.online}
+          seller={item.vendedor.nome}
+        />}
         keyExtractor={item => `${item.idProduto}`}
         onRefresh={getProducts}
         refreshing={isRefreshing}
