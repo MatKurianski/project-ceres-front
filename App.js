@@ -40,15 +40,15 @@ TaskManager.defineTask(task, ({ data: { locations }, error }) => {
       if(userData == null) return
       const { token } = JSON.parse(userData)
       if(!token) return
-      request('/online', {
-        method: 'POST',
-        token,
-        disableConnectionErrorMessage: true
-      })
-      .then(res => console.log(res.data))
-      .catch(e => {})
 
-      if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {        
+      if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {  
+        request('/online', {
+          method: 'POST',
+          token,
+          disableConnectionErrorMessage: true
+        })
+        .then(res => console.log(res.data))
+        .catch(e => {})      
         if(!estaNaEACH) {
           Notifications.presentLocalNotificationAsync({
             title: 'Comidinhas EACH',
