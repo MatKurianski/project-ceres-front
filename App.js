@@ -35,36 +35,39 @@ TaskManager.defineTask(task, ({ data: { locations }, error }) => {
   const { latitude, longitude } = locations[locations.length-1].coords
   const abs = Math.abs
 
-  if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {
-    console.log('Está na EACH!')
-    AsyncStorage.getItem(TOKEN_KEY)
-      .then(userData => {
-        const { token } = JSON.parse(userData)
-        if(!token) return
-        request('/online', {
-          method: 'POST',
-          token,
-          disableConnectionErrorMessage: true
-        }).then(res => console.log(res.data))
-          .catch(e => {})
+  AsyncStorage.getItem(TOKEN_KEY)
+    .then(userData => {
+      if(userData == null) return
+      const { token } = JSON.parse(userData)
+      if(!token) return
+      request('/online', {
+        method: 'POST',
+        token,
+        disableConnectionErrorMessage: true
       })
-    if(!estaNaEACH) {
-      Notifications.presentLocalNotificationAsync({
-        title: 'Comidinhas EACH',
-        body: "Você está na EACH!"
-      })
-      estaNaEACH = true
-    }
-  } else {
-    if(estaNaEACH) {
-      Notifications.presentLocalNotificationAsync({
-        title: 'Comidinhas EACH',
-        body: "Você saiu da EACH :("
-      })
-    }
-    estaNaEACH = false
-  }
-});
+      .then(res => console.log(res.data))
+      .catch(e => {})
+
+      if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {        
+        if(!estaNaEACH) {
+          Notifications.presentLocalNotificationAsync({
+            title: 'Comidinhas EACH',
+            body: "Você está na EACH!"
+          })
+          estaNaEACH = true
+        }
+      } else {
+        if(estaNaEACH) {
+          Notifications.presentLocalNotificationAsync({
+            title: 'Comidinhas EACH',
+            body: "Você saiu da EACH :("
+          })
+        }
+        estaNaEACH = false
+      }})
+      .then(res => console.log(res.data))
+    .catch(e => {})
+  })
 
 const iniciarGeolocalizacao = () => {
   Permissions.askAsync(Permissions.LOCATION)

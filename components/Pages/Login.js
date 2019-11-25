@@ -29,6 +29,12 @@ export default function Login(props) {
       if (status === "sucesso") {
         signIn(userData)
         ToastAndroid.show('Logado com sucesso!', ToastAndroid.LONG);
+        request('/online', {
+          method: 'POST',
+          token: userData.token,
+          disableConnectionErrorMessage: true
+        }).then(res => console.log(res.data))
+          .catch(e => {})
         props.navigation.pop()
       } else if(userData.mensagem !== undefined) {
         ToastAndroid.show(userData.mensagem, ToastAndroid.SHORT)

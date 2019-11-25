@@ -7,13 +7,14 @@ import Products from './Products'
 import { AuthCtx, TOKEN_KEY } from '../Context/Auth'
 
 export default function Home() {
-  const { setUserData } = React.useContext(AuthCtx)
+  const { setUserData,  userData} = React.useContext(AuthCtx)
 
   React.useEffect(() => {
       AsyncStorage.getItem(TOKEN_KEY)
         .then(item => {
-          itemObject = JSON.parse(item)
-          if (itemObject === null) return
+          if(item === null) return
+          console.log(item)
+          const itemObject = JSON.parse(item)
           setUserData({logged: true, ...itemObject})
         })
         .catch(e => {})
