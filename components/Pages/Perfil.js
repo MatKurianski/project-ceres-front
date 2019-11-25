@@ -5,6 +5,7 @@ import { withNavigationFocus } from 'react-navigation'
 import CustomText from './../Custom/CustomText'
 import LoginButton from './../Custom/LoginButton'
 import { getApiUrl } from './../../assets/config'
+import Product from './../Pages/Products'
 
 const {width, height} = Dimensions.get('window')
 const imageHeight = (width / 2) - 30
@@ -98,16 +99,13 @@ function Perfil(props) {
                   keyExtractor={item => item.title}
                   ItemSeparatorComponent={() => <View style={{borderWidth: 0.5, borderColor: 'gray'}} />}
                 />
-                <View style={styles.secao}>
+                <View style={styles.secaoMeusProdutos}>
                   <CustomText bold={true} style={styles.secaoTitulo}>
                     Meus produtos
                   </CustomText>
-                  <Image style={styles.produto} source={{uri: 'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'}} />
-                  <Image style={styles.produto} source={{uri: 'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'}} />
-                  <Image style={styles.produto} source={{uri: 'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'}} />
-                  <Image style={styles.produto} source={{uri: 'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'}} />
-                  <Image style={styles.produto} source={{uri: 'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'}} />
-                  <Image style={styles.produto} source={{uri: 'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'}} />
+                  <Product 
+                    query={'/products/vendedor/'+userData.id}
+                  />
                 </View>
               </View>
 
@@ -168,9 +166,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     flexWrap: 'wrap'
   },
+  secaoMeusProdutos: {
+    flex: 0
+  },
   secaoTitulo: {
     marginTop: 15,
     marginBottom: 25,
+    marginLeft: 10,
     fontSize: 16,
     width: '100%'
   },

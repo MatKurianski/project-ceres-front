@@ -20,7 +20,7 @@ function CategoriesSection(props) {
     const categoriesCards = categories.map(categoria => (
       <CategoryCard name={categoria.nomecategoria} key={categoria.idCategoria} onPress={() => props.navigation.navigate('Produtos', {
         title: 'Categoria: '+categoria.nomecategoria,
-        query: '/products/?categoryId='+categoria.idCategoria
+        query: '/products/categories/'+categoria.idCategoria
       })} />
     ))
 

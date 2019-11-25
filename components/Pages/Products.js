@@ -14,7 +14,7 @@ function Products(props) {
   const getProducts = async () => {
     const query = props.navigation.getParam('query')
     setRefreshing(true)
-    request(query || '/products')
+    request(query || props.query || '/products')
       .then(res => {
         res.data.forEach(produto => produto.imagem = getApiUrl() +'/uploads/produtos/'+ produto.imagem)
         setProdutos(res.data)
