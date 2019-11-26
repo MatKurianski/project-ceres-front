@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Pages/Login'
-import { AsyncStorage, View, Text, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -9,11 +9,11 @@ import { createBottomTabNavigator } from 'react-navigation-tabs'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
-import { Notifications, Updates } from 'expo'
+import { Updates } from 'expo'
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
-import { AuthContext, TOKEN_KEY } from './components/Context/Auth'
+import { AuthContext } from './components/Context/Auth'
 import Perfil from './components/Pages/Perfil'
 import Config from './components/Pages/Config'
 import Register from './components/Pages/Register'
@@ -21,53 +21,16 @@ import AdicionarProduto from './components/Pages/AdicionarProduto'
 import Products from './components/Pages/Products'
 
 import * as Font from 'expo-font'
-import request from './actions/request';
 import Home from './components/Pages/Home';
 import Produto from './components/Pages/Produto';
+import { _verificarSeEstaNaEach } from './actions/estaNaEach'
 
 const task = "EACH"
 
-let estaNaEACH = false
 TaskManager.defineTask(task, ({ data: { locations }, error }) => {
   if (error) return;
-
-  const EACH = { lat: 23.4823919, log: -46.502638 }
-  const radius = 0.003
   const { latitude, longitude } = locations[locations.length-1].coords
-  const abs = Math.abs
-
-  AsyncStorage.getItem(TOKEN_KEY)
-    .then(userData => {
-      if(userData == null) return
-      const { token } = JSON.parse(userData)
-      if(!token) return
-
-      if(abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius) {  
-        request('/online', {
-          method: 'POST',
-          token,
-          disableConnectionErrorMessage: true
-        })
-        .then(res => console.log(res.data))
-        .catch(e => {})      
-        if(!estaNaEACH) {
-          Notifications.presentLocalNotificationAsync({
-            title: 'Comidinhas EACH',
-            body: "Você está na EACH!"
-          })
-          estaNaEACH = true
-        }
-      } else {
-        if(estaNaEACH) {
-          Notifications.presentLocalNotificationAsync({
-            title: 'Comidinhas EACH',
-            body: "Você saiu da EACH :("
-          })
-        }
-        estaNaEACH = false
-      }})
-      .then(res => console.log(res.data))
-    .catch(e => {})
+  _verificarSeEstaNaEach(latitude, longitude)  
   })
 
 const iniciarGeolocalizacao = () => {

@@ -6,6 +6,7 @@ import CustomText from './../Custom/CustomText'
 import LoginButton from './../Custom/LoginButton'
 import { getApiUrl } from './../../assets/config'
 import Product from './../Pages/Products'
+import { verificarSeEstaNaEach } from '../../actions/estaNaEach'
 
 const {width, height} = Dimensions.get('window')
 const imageHeight = (width / 2) - 30
@@ -59,8 +60,10 @@ function Perfil(props) {
 
   React.useEffect(() => {
     StatusBar.setBackgroundColor('#e8e8e8')
+    verificarSeEstaNaEach()
     const listener1 = props.navigation.addListener('didFocus', () => {
       StatusBar.setBackgroundColor('#e8e8e8')
+      verificarSeEstaNaEach()
     })
     const listener2 = props.navigation.addListener('willBlur', () => {
       StatusBar.setBackgroundColor('#fff')
