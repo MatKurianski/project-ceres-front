@@ -27,25 +27,24 @@ import { _verificarSeEstaNaEach } from './actions/estaNaEach'
 
 const task = "EACH"
 
-TaskManager.unregisterAllTasksAsync()
-
 TaskManager.defineTask(task, ({ data: { locations }, error }) => {
   if (error) return;
   const { latitude, longitude } = locations[locations.length-1].coords
   _verificarSeEstaNaEach(latitude, longitude)  
   })
 
-const iniciarGeolocalizacao = () => {
-  Permissions.askAsync(Permissions.LOCATION)
-    .then(res => {
-      if(!res) return
-      Location.startLocationUpdatesAsync(task, {
-        timeInterval: 300000,
-      })
+Permissions.askAsync(Permissions.LOCATION)
+  .then(res => {
+    if(!res) return
+    Location.startLocationUpdatesAsync(task, {
+      timeInterval: 300000,
+      accuracy: Location.Accuracy.High,
+      foregroundService: {
+        notificationTitle: 'Fique tranquilo!',
+        notificationBody: "Só estamos interessados em saber se você está na EACH (:"
+      }
     })
-}
-
-iniciarGeolocalizacao()
+  })
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
