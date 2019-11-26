@@ -18,8 +18,6 @@ function Produto(props) {
     })
   }, [])
 
-  console.log(userData.descricao)
-
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.imageContainer}>
@@ -55,9 +53,16 @@ function Produto(props) {
               </CustomText>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.categoriaContainer}>
                 {categorias.map(categoria => (
-                  <CustomText key={categoria.idCategoria} style={styles.categoria}>
-                    {categoria.nomeCategoria}
-                  </CustomText>
+                  <TouchableOpacity
+                    key={categoria.idCategoria}
+                    onPress={() => props.navigation.navigate('Produtos', {
+                      title: 'Categoria : '+categoria.nomeCategoria,
+                      query: '/products/categories/'+categoria.idCategoria
+                    })} >
+                    <CustomText style={styles.categoria}>
+                      {categoria.nomeCategoria}
+                    </CustomText>
+                  </TouchableOpacity>
                 ))}
               </ScrollView>
             </>
@@ -65,7 +70,12 @@ function Produto(props) {
           null
         }
         <View style={styles.separator} />
-        <TouchableOpacity style={styles.vendedorContainer}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Produtos', {
+            title: 'Vendedor: '+vendedor.nome,
+            query: '/products/vendedor/'+vendedor.id
+          })}
+          style={styles.vendedorContainer} >
           <Image
             source={{uri: vendedor.foto}}
             style={styles.vendedorFoto}
