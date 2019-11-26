@@ -6,11 +6,11 @@ import { Entypo } from '@expo/vector-icons'
 export default function SellerStatusBadge(props) {
     let icon = "info-with-circle"
     
-    let text = "Online agora!"
+    let text = "Está na EACH agora!"
     let color = "green"
 
     if (!props.online) {
-        text = "Offline"
+        text = "Não está na EACH agora"
         color = "grey"
     }
     return(
