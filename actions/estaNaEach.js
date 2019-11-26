@@ -8,9 +8,9 @@ import { TOKEN_KEY } from './../components/Context/Auth'
 const abs = Math.abs
 const radius = 0.003
 
-export async function estaNaEACH(latitude, longitude) {
-  const EACH = { lat: 23.4823919, log: -46.502638 }
-  return abs(latitude - EACH.lat) < radius || abs(longitude - EACH.log) < radius
+export function estaNaEACH(latitude, longitude) {
+  const EACH = { lat: -23.4823919, log: -46.502638 }
+  return abs(latitude - EACH.lat) < radius && abs(longitude - EACH.log) < radius
 }
 
 let _estaNaEACH = false

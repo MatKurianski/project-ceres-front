@@ -27,6 +27,8 @@ import { _verificarSeEstaNaEach } from './actions/estaNaEach'
 
 const task = "EACH"
 
+TaskManager.unregisterAllTasksAsync()
+
 TaskManager.defineTask(task, ({ data: { locations }, error }) => {
   if (error) return;
   const { latitude, longitude } = locations[locations.length-1].coords
@@ -38,7 +40,7 @@ const iniciarGeolocalizacao = () => {
     .then(res => {
       if(!res) return
       Location.startLocationUpdatesAsync(task, {
-        timeInterval: 600000,
+        timeInterval: 300000,
       })
     })
 }
