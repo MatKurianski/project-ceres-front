@@ -13,7 +13,6 @@ export default function Home() {
       AsyncStorage.getItem(TOKEN_KEY)
         .then(item => {
           if(item === null) return
-          console.log(item)
           const itemObject = JSON.parse(item)
           setUserData({logged: true, ...itemObject})
         })

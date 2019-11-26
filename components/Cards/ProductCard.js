@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import CustomText from './../Custom/CustomText'
 import SellerStatusBadge from './../Badges/SellerStatusBadge'
+import { withNavigation } from 'react-navigation';
 
-export default function ProductCard(props) {
+function ProductCard(props) {
   return (
-    <View style={styles.foodcard}>
+    <TouchableOpacity onPress={props.onPress} style={styles.foodcard}>
         <View style={{height: 100, width: 100, justifyContent: 'center', alignItems: 'center'}}>
             <Image
                 resizeMode='stretch'
@@ -23,7 +24,7 @@ export default function ProductCard(props) {
             </View>
             <CustomText style={styles.price}>{'R$ '+props.price.toFixed(2)}</CustomText>
          </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -63,3 +64,5 @@ const styles = StyleSheet.create({
       fontSize: 11
     }
 });
+
+export default withNavigation(ProductCard)

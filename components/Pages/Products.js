@@ -47,6 +47,7 @@ function Products(props) {
           price={item.preco}
           online={item.vendedor.online}
           seller={item.vendedor.nome}
+          onPress={() => props.navigation.navigate('Produto', {userData: item, title: item.nome})}
         />}
         keyExtractor={item => `${item.idProduto}`}
         onRefresh={getProducts}

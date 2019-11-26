@@ -23,6 +23,7 @@ import Products from './components/Pages/Products'
 import * as Font from 'expo-font'
 import request from './actions/request';
 import Home from './components/Pages/Home';
+import Produto from './components/Pages/Produto';
 
 const task = "EACH"
 
@@ -31,7 +32,7 @@ TaskManager.defineTask(task, ({ data: { locations }, error }) => {
   if (error) return;
 
   const EACH = { lat: 23.4823919, log: -46.502638 }
-  const radius = 0.002
+  const radius = 0.003
   const { latitude, longitude } = locations[locations.length-1].coords
   const abs = Math.abs
 
@@ -135,7 +136,6 @@ const backWhiteHeader = () => ({
 
 const backWhiteHeaderAndTitle = (title) => {
   const res = backWhiteHeader()
-  console.log(res)
 
   return () => ({
     title,
@@ -165,6 +165,9 @@ const MainStack = createStackNavigator({
   AdicionarProduto: {
     screen: AdicionarProduto,
     navigationOptions: backWhiteHeaderAndTitle('Adicionando produto')
+  },
+  Produto: {
+    screen: Produto
   },
   Produtos: {
     screen: Products
