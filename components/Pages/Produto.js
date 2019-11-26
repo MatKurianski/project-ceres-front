@@ -19,6 +19,8 @@ function Produto(props) {
     setHeight(imageHeight)
   })
 
+  console.log(userData)
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.imageContainer}>
@@ -36,9 +38,10 @@ function Produto(props) {
         </CustomText>
         <View style={styles.separator} />
         <TouchableOpacity style={styles.vendedorContainer}>
-          {/* <Image>
-
-          </Image> */}
+          <Image
+            source={{uri: vendedor.foto}}
+            style={styles.vendedorFoto}
+          />
           <CustomText style={styles.nomeVendedor}>
             Vendido por:{'\n'+vendedor.nome}
           </CustomText>
@@ -70,23 +73,31 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   vendedorContainer: {
-    alignItems: 'center',
-    justifyContent: 'center'
+    borderWidth: 0.5,
+    borderRadius: 30,
+    backgroundColor: 'white',
+    padding: 15,
+    flexDirection: 'row',
+    flex: 0,
+    alignSelf: 'center'
   },
   separator: {
     borderWidth: 0.2,
     marginVertical: 30
   },
   nomeVendedor: {
-    flex: 0,
-    backgroundColor: 'white',
-    padding: 15,
     textAlign: 'center',
     textAlignVertical: 'center',
     lineHeight: 20,
     fontSize: 15,
-    borderWidth: 0.5,
-    borderRadius: 30
+  },
+  vendedorFoto: {
+    width: 50, 
+    height: 50, 
+    resizeMode: 'contain', 
+    borderRadius: 100, 
+    marginRight: 15, 
+    overflow: 'hidden'
   },
   info: {
     flex: 1,

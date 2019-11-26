@@ -16,7 +16,10 @@ function Products(props) {
     setRefreshing(true)
     request(query || props.query || '/products')
       .then(res => {
-        res.data.forEach(produto => produto.imagem = getApiUrl() +'/uploads/produtos/'+ produto.imagem)
+        res.data.forEach(produto => {
+          produto.imagem = getApiUrl() +'/uploads/produtos/'+ produto.imagem
+          produto.vendedor.foto = getApiUrl() +'/uploads/vendedores/'+ produto.vendedor.foto
+        })
         setProdutos(res.data)
       })
       .catch(err => console.err())
