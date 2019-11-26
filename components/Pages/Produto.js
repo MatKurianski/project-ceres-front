@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     color: 'white',
     fontSize: 17,
-    transform: [{translateY: 15}]
+    transform: [{translateY: 15}],
+    elevation: 7
   },
   descricao: {
     fontSize: 16
@@ -101,8 +102,10 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    marginTop: 25,
-    padding: 15
+    paddingTop: 25,
+    padding: 15,
+    elevation: 6,
+    backgroundColor: 'white'
   }
 })
 
@@ -111,7 +114,11 @@ Produto.navigationOptions = ({navigation}) => ({
   headerTitleStyle: {
     fontFamily: 'ubuntu',
     fontWeight: "200"
-  }
+  },
+  headerStyle: {
+    borderBottomWidth: 0,
+    elevation: 6
+  },
 })
 
 export default withNavigation(Produto)
