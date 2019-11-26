@@ -3,39 +3,67 @@ import { View, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView } fro
 import { withNavigation } from 'react-navigation'
 import CustomText from '../Custom/CustomText'
 
+const screenWidth = Dimensions.get('window').width
+
 function Produto(props) {
-  const userData = props.navigation.getParam('userData')
-  const { imagem, vendedor, descricao, preco } = userData
-  const [width, setWidth] = React.useState(0)
   const [height, setHeight] = React.useState(0)
+  const userData = props.navigation.getParam('userData')
+  const { imagem, vendedor, descricao, preco, categorias } = userData
 
-  const screenWidth = Dimensions.get('window').width
+  React.useEffect(() => {
+    Image.getSize(imagem, (width, height) => {
+      const scaleFactor = width / screenWidth
+      const imageHeight = height / scaleFactor
+      setHeight(imageHeight)
+    })
+  }, [])
 
-  Image.getSize(imagem, (width, height) => {
-    const scaleFactor = width / screenWidth
-    const imageHeight = height / scaleFactor
-
-    setWidth(screenWidth)
-    setHeight(imageHeight)
-  })
-
-  console.log(userData)
+  console.log(userData.descricao)
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image 
           source={{uri: imagem}}
-          style={{width, height}}
+          style={{width: screenWidth, height}}
         />
         <CustomText bold={true} style={styles.preco}>
           R$ {preco.toFixed(2)}
         </CustomText>
       </View> 
       <View style={styles.info}>
-        <CustomText style={styles.descricao}>
-          {descricao}
-        </CustomText>
+        { 
+          descricao.trim() !== '' && descricao !== undefined ? 
+          (
+            <>
+              <CustomText bold={true} style={styles.label}>
+                Descrição
+              </CustomText>
+              <CustomText style={styles.descricao}>
+                {descricao}
+              </CustomText>
+            </>
+          ) :
+          null
+        }
+        { 
+          categorias.length > 0 ? 
+          (
+            <>
+              <CustomText bold={true} style={styles.label}>
+                Categorias
+              </CustomText>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.categoriaContainer}>
+                {categorias.map(categoria => (
+                  <CustomText key={categoria.idCategoria} style={styles.categoria}>
+                    {categoria.nomeCategoria}
+                  </CustomText>
+                ))}
+              </ScrollView>
+            </>
+          ) :
+          null
+        }
         <View style={styles.separator} />
         <TouchableOpacity style={styles.vendedorContainer}>
           <Image
@@ -73,6 +101,20 @@ const styles = StyleSheet.create({
   descricao: {
     fontSize: 16
   },
+  label: {
+    fontSize: 19,
+    marginVertical: 20
+  },
+  categoriaContainer: {
+    flexDirection: 'row',
+    paddingTop: 10
+  },
+  categoria: {
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 0.3,
+    marginHorizontal: 10
+  },
   vendedorContainer: {
     borderWidth: 0.5,
     borderRadius: 30,
@@ -102,7 +144,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    paddingTop: 25,
+    paddingTop: 5,
     padding: 15,
     elevation: 6,
     backgroundColor: 'white'
