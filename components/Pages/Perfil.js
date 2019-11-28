@@ -7,19 +7,24 @@ import LoginButton from './../Custom/LoginButton'
 import { getApiUrl } from './../../assets/config'
 import Product from './../Pages/Products'
 import { verificarSeEstaNaEach } from '../../actions/estaNaEach'
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import request from '../../actions/request'
 
-const {width, height} = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 const imageHeight = (width / 2) - 30
 
 function Opcao(props) {
   return (
     <TouchableOpacity onPress={() => props.onPress()} style={stylesOpcao.container}>
-      <CustomText style={stylesOpcao.title}>
-        {props.title}
-      </CustomText>
-      <CustomText style={stylesOpcao.desc}>
-        {props.desc}
-      </CustomText>
+      <MaterialIcons name={props.icon} size={32} style={stylesOpcao.icon} />
+      <View>
+        <CustomText style={stylesOpcao.title}>
+          {props.title}
+        </CustomText>
+        <CustomText style={stylesOpcao.desc}>
+          {props.desc}
+        </CustomText>
+      </View>
     </TouchableOpacity>
   )
 }
@@ -30,43 +35,59 @@ const stylesOpcao = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 10,
     paddingVertical: 20,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    textAlignVertical: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 18
   },
   desc: {
     fontSize: 12
+  },
+  icon: {
+    marginRight: 10
   }
 })
 
 function Perfil(props) {
   const {userData, signOut} = React.useContext(AuthCtx)
-  let fotoUrl = undefined
-  if(userData.logged) fotoUrl = getApiUrl() + '/uploads/vendedores/' + userData.foto
+  const [vendedor, setVendedor] = React.useState({})
+  const idVendedor = props.navigation.getParam('idVendedor')
+
+  let isMe = false
+  if(userData.logged) {
+    if(!idVendedor || idVendedor === userData.id) isMe = true
+  }
 
   const opcoes = [
     {
       title: "Adicionar produto",
       desc: "Comece a anunciar agora mesmo!",
-      onPress: () => props.navigation.navigate('AdicionarProduto')
+      onPress: () => props.navigation.navigate('AdicionarProduto'),
+      icon: 'add'
     },
     {
       title: "Sair",
       desc: "Fazer logoff",
-      onPress: () => signOut()
+      onPress: () => signOut(),
+      icon:   "exit-to-app"
     }
   ]
 
   React.useEffect(() => {
-    StatusBar.setBackgroundColor('#e8e8e8')
+    StatusBar.setBackgroundColor('tomato')
+    StatusBar.setBarStyle("light-content")
     verificarSeEstaNaEach()
     const listener1 = props.navigation.addListener('didFocus', () => {
-      StatusBar.setBackgroundColor('#e8e8e8')
+      StatusBar.setBackgroundColor('tomato')
+      StatusBar.setBarStyle("light-content")
       verificarSeEstaNaEach()
     })
     const listener2 = props.navigation.addListener('willBlur', () => {
       StatusBar.setBackgroundColor('#fff')
+      StatusBar.setBarStyle("dark-content")
     })
 
     return () => {
@@ -75,16 +96,30 @@ function Perfil(props) {
     }
   }, [])
 
+  React.useEffect(() => {
+    request('/vendedor/'+ (isMe ? userData.id : idVendedor))
+      .then(res => {
+        const _vendedor = res.data
+        _vendedor.foto = getApiUrl() + '/uploads/vendedores/' + _vendedor.foto
+        _vendedor.produtos.forEach(produto => {
+          produto.imagem = getApiUrl() + '/uploads/produtos/' + produto.imagem
+        })
+        setVendedor(_vendedor)
+      })
+      .then(err => {})
+  }, [])
+
   return (
     <>
-      {userData.logged ? 
+      {userData.logged || idVendedor ? 
         <>
           <ScrollView showsVerticalScrollIndicator={false} style={styles.background}>
+            <View style={{backgroundColor: 'tomato', position: 'absolute', width, height: 300}} />
             <View style={styles.container}>
-              <Image style={styles.profilePhoto} source={{uri: fotoUrl}} />
+              <Image style={styles.profilePhoto} source={{uri: vendedor.foto}} />
               <View style={styles.profileInfo}>
                 <CustomText bold={true} style={styles.nome}>
-                  {userData.nome}
+                  {vendedor.nome}
                 </CustomText>
                 <View style={styles.secao}>
                   <View style={styles.square}>
@@ -96,22 +131,39 @@ function Perfil(props) {
                     <CustomText style={styles.squareSmallText}>Estrelas</CustomText>
                   </View>
                 </View>
-                <FlatList
-                  data={opcoes} 
-                  renderItem={({item}) => <Opcao title={item.title} desc={item.desc} onPress={item.onPress} />}
-                  keyExtractor={item => item.title}
-                  ItemSeparatorComponent={() => <View style={{borderWidth: 0.5, borderColor: 'gray'}} />}
-                />
-                <View style={styles.secaoMeusProdutos}>
-                  <CustomText bold={true} style={styles.secaoTitulo}>
-                    Meus produtos
-                  </CustomText>
-                  <Product 
-                    query={'/products/vendedor/'+userData.id}
-                  />
-                </View>
+                {
+                  isMe ? 
+                  <FlatList
+                    data={opcoes} 
+                    renderItem={({item}) => <Opcao title={item.title} icon={item.icon} desc={item.desc} onPress={item.onPress} />}
+                    keyExtractor={item => item.title}
+                    ItemSeparatorComponent={() => <View style={{borderWidth: 0.5, borderColor: 'gray'}} />}
+                  /> : 
+                  <TouchableOpacity style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      padding: 15,
+                      backgroundColor: 'tomato',
+                      borderRadius: 10,
+                      flex: 0,
+                      alignSelf: 'center',
+                      marginTop: 10
+                    }}>
+                    <FontAwesome style={{marginRight: 8}} size={16} color="white" name="whatsapp" />
+                    <CustomText style={{color: 'white', flex: 0}}>
+                      Enviar mensagem
+                    </CustomText>
+                  </TouchableOpacity>
+                }
               </View>
-
+            </View>
+            <View style={styles.secaoMeusProdutos}>
+              <CustomText bold={true} style={styles.secaoTitulo}>
+                Produtos
+              </CustomText>
+              <Product
+                productData={vendedor.produtos || []} 
+              />
             </View>
           </ScrollView>
         </>
@@ -130,7 +182,8 @@ function Perfil(props) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#e8e8e8'
+    // backgroundColor: '#e8e8e8',
+    zIndex: -1
   },
   container: {
     position: 'relative',
@@ -138,9 +191,8 @@ const styles = StyleSheet.create({
     marginTop: 100,
     elevation: 7,
     flex: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginHorizontal: 5
+    borderRadius: 10,
+    marginHorizontal: 15
   },
   profilePhoto: {
     position: 'absolute',
@@ -148,7 +200,7 @@ const styles = StyleSheet.create({
     width: 95,
     backgroundColor: 'gray',
     top: -45,
-    borderRadius: 15,
+    borderRadius: 95 / 2  ,
     alignSelf: 'center',
   },
   profileInfo: {
@@ -170,7 +222,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   secaoMeusProdutos: {
-    flex: 0
+    flex: 0,
+    padding: 10
   },
   secaoTitulo: {
     marginTop: 15,

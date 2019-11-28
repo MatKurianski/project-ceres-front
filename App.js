@@ -130,6 +130,17 @@ const MainStack = createStackNavigator({
     screen: AdicionarProduto,
     navigationOptions: backWhiteHeaderAndTitle('Adicionando produto')
   },
+  Perfil2: {
+    screen: Perfil,
+    navigationOptions: () => ({
+      headerTintColor: 'white',
+      headerStyle: { 
+        borderBottomWidth: 0,
+        elevation: 0
+      },
+      headerTransparent: true
+    })
+  },
   Produto: {
     screen: Produto
   },

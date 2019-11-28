@@ -13,6 +13,7 @@ function Products(props) {
 
   const getProducts = async () => {
     const query = props.navigation.getParam('query')
+
     setRefreshing(true)
     request(query || props.query || '/products')
       .then(res => {
@@ -43,7 +44,7 @@ function Products(props) {
       {
         produtos.length > 0 || primeiraReq ? 
         <FlatList 
-        data={produtos}
+        data={props.productData || produtos}
         renderItem={({item}) => <ProductCard 
           title={item.nome}
           image={{uri: item.imagem}}

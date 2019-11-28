@@ -71,9 +71,8 @@ function Produto(props) {
         }
         <View style={styles.separator} />
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Produtos', {
-            title: 'Vendedor: '+vendedor.nome,
-            query: '/products/vendedor/'+vendedor.id
+          onPress={() => props.navigation.navigate('Perfil2', {
+            idVendedor: vendedor.id
           })}
           style={styles.vendedorContainer} >
           <Image
