@@ -97,6 +97,7 @@ function Perfil(props) {
   }, [])
 
   React.useEffect(() => {
+    if(!userData.logged && !idVendedor) return
     request('/vendedor/'+ (isMe ? userData.id : idVendedor))
       .then(res => {
         const _vendedor = res.data
@@ -107,7 +108,7 @@ function Perfil(props) {
         setVendedor(_vendedor)
       })
       .then(err => {})
-  }, [])
+  }, [userData.logged])
 
   return (
     <>
@@ -123,7 +124,7 @@ function Perfil(props) {
                 </CustomText>
                 <View style={styles.secao}>
                   <View style={styles.square}>
-                    <CustomText bold={true} style={styles.squareBigText}>6</CustomText>
+                    <CustomText bold={true} style={styles.squareBigText}>{vendedor.produtos ? vendedor.produtos.length : '?'}</CustomText>
                     <CustomText style={styles.squareSmallText}>Produtos</CustomText>
                   </View>
                   <View style={styles.square}>
