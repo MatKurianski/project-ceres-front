@@ -5,6 +5,7 @@ import CustomText from './../Custom/CustomText'
 import request from './../../actions/request'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { TextInputMask } from 'react-native-masked-text'
 
 import FormData from 'form-data'
 
@@ -16,6 +17,8 @@ export default function Login(props) {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [telefoneNoMask, setTelefoneNoMask]  = useState('')
   const [foto, setFoto] = useState(undefined)
   const [textoBotaoFoto, setTextoBotaoFoto] = useState("UPLOAD DE FOTO DE PERFIL")
   const [registrarDesativado, toggleRegistrarDesativado] = useState(false)
@@ -30,6 +33,7 @@ export default function Login(props) {
     form.append('nome', nome)
     form.append('email', email)
     form.append('senha', senha)
+    form.append('telefone', telefoneNoMask)
     form.append('foto', {uri: foto.uri, type: 'image/jpg', name: 'image.jpg'})
     request('/register', {
       method: 'POST',
@@ -99,6 +103,27 @@ export default function Login(props) {
           type="password"
           style={{...styles.input, marginBottom: 25}}
           placeholder="Senha"
+        />
+        <TextInputMask
+          type={'cel-phone'}
+          options={{
+            maskType: 'BRL',
+            withDDD: true,
+            dddMask: '(99) '
+          }}
+          style={{
+            fontSize: 20,
+            textAlign: 'center',
+            fontFamily: 'ubuntu',
+            marginBottom: 30
+          }}
+          placeholder="Número de celular"
+          value={telefone}
+          includeRawValueInChangeText={true}
+          onChangeText={(telefone, telefoneNoMask) => {
+            setTelefone(telefone)
+            setTelefoneNoMask(telefoneNoMask)
+          }}
         />
         <CustomButton onPress={() => carregarFoto()} >
           <MaterialCommunityIcons name="upload" size={18} color="white" />
