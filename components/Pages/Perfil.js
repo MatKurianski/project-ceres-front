@@ -9,6 +9,8 @@ import Product from './../Pages/Products'
 import { verificarSeEstaNaEach } from '../../actions/estaNaEach'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import request from '../../actions/request'
+import { Linking } from 'expo'
+import WhatsappButton from '../Custom/WhatsappButton'
 
 const { width } = Dimensions.get('window')
 const imageHeight = (width / 2) - 30
@@ -55,6 +57,7 @@ function Perfil(props) {
   const {userData, signOut} = React.useContext(AuthCtx)
   const [vendedor, setVendedor] = React.useState({})
   const idVendedor = props.navigation.getParam('idVendedor')
+  console.log(vendedor)
 
   let isMe = false
   if(userData.logged) {
@@ -140,21 +143,7 @@ function Perfil(props) {
                     keyExtractor={item => item.title}
                     ItemSeparatorComponent={() => <View style={{borderWidth: 0.5, borderColor: 'gray'}} />}
                   /> : 
-                  <TouchableOpacity style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      padding: 15,
-                      backgroundColor: 'tomato',
-                      borderRadius: 10,
-                      flex: 0,
-                      alignSelf: 'center',
-                      marginTop: 10
-                    }}>
-                    <FontAwesome style={{marginRight: 8}} size={16} color="white" name="whatsapp" />
-                    <CustomText style={{color: 'white', flex: 0}}>
-                      Enviar mensagem
-                    </CustomText>
-                  </TouchableOpacity>
+                  <WhatsappButton telefone={vendedor.telefone} />
                 }
               </View>
             </View>

@@ -2,6 +2,8 @@ import React from 'react'
 import { View, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import CustomText from '../Custom/CustomText'
+import { Linking } from 'expo'
+import WhatsappButton from '../Custom/WhatsappButton'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -69,6 +71,10 @@ function Produto(props) {
           ) :
           null
         }
+        <CustomText bold={true} style={styles.label}>
+          Faça um pedido para o vendedor!
+        </CustomText>
+        <WhatsappButton telefone={vendedor.telefone} />
         <View style={styles.separator} />
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Perfil2', {
