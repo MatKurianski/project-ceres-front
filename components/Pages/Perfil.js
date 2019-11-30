@@ -72,10 +72,7 @@ function Perfil(props) {
     {
       title: "Sair",
       desc: "Fazer logoff",
-      onPress: () => {
-        signOut()
-        setVendedor({})
-      },
+      onPress: () => signOut(),
       icon:   "exit-to-app"
     }
   ]
