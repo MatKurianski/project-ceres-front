@@ -24,6 +24,7 @@ import * as Font from 'expo-font'
 import Home from './components/Pages/Home';
 import Produto from './components/Pages/Produto';
 import { _verificarSeEstaNaEach, startLocationUpdate } from './actions/estaNaEach'
+import FazerAvaliacao from './components/Pages/FazerAvaliacao';
 
 const task = "EACH"
 
@@ -136,6 +137,10 @@ const MainStack = createStackNavigator({
       },
       headerTransparent: true
     })
+  },
+  FazerAvaliacao: {
+    screen: FazerAvaliacao,
+    navigationOptions: backWhiteHeaderAndTitle('Avaliando produto')
   },
   Produto: {
     screen: Produto

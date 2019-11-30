@@ -16,7 +16,7 @@ export default function request(route, options={}) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      if(method === 'DELETE') {
+      if(method === 'DELETE' || method === 'GET') {
         resolve(
           await req(route, {
             headers: {

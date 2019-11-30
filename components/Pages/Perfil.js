@@ -144,7 +144,9 @@ function Perfil(props) {
                     <CustomText style={styles.squareSmallText}>Produtos</CustomText>
                   </View>
                   <View style={styles.square}>
-                    <CustomText bold={true} style={styles.squareBigText}>4.39</CustomText>
+                    <CustomText bold={true} style={styles.squareBigText}>
+                      {vendedor.notaVendedor ? vendedor.notaVendedor : 'N/A'}
+                    </CustomText>
                     <CustomText style={styles.squareSmallText}>Estrelas</CustomText>
                   </View>
                 </View>

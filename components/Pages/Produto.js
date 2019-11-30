@@ -14,7 +14,7 @@ function Produto(props) {
   const [height, setHeight] = React.useState(0)
   const { userData } = React.useContext(AuthCtx)
   const dadosProduto = props.navigation.getParam('userData')
-  const { imagem, vendedor, descricao, preco, categorias, idProduto } = dadosProduto
+  const { imagem, vendedor, descricao, preco, categorias, idProduto, avaliacaoMedia } = dadosProduto
 
   const deletarProduto = () => {
     Alert.alert(
@@ -123,29 +123,43 @@ function Produto(props) {
         </CustomText>
         <View style={styles.reviewContainer}>
           <View style={styles.reviewRatingContainer}>
-            <CustomText bold style={styles.reviewCount}>
-              4.5 / 5
-            </CustomText>
-            <Rating
-              imageSize={40}
-              type="heart"
-              startingValue={4.5}
-              fractions={2}
-              ratingCount={5}
-              readonly
-            />
+            {
+              avaliacaoMedia ?
+              <>
+                <CustomText bold style={styles.reviewCount}>
+                  {avaliacaoMedia}
+                </CustomText>
+                <Rating
+                  imageSize={40}
+                  type="heart"
+                  startingValue={avaliacaoMedia}
+                  fractions={2}
+                  ratingCount={5}
+                  readonly
+                />
+              </> :
+              <CustomText style={{fontSize: 16, textAlign: 'center', textAlignVertical: 'center'}}>
+                Sem avaliações
+              </CustomText>
+            }
           </View>
           <View style={styles.reviewOptions}>
             <TouchableOpacity style={[styles.reviewOptionButton, styles.reviewOptionsButtonLeft]} >
-              <CustomText style={styles.reviewOptionButtonText} >
+              <CustomText
+                style={styles.reviewOptionButtonText} 
+                onPress={() => props.navigation.navigate('FazerAvaliacao', {idProduto})}
+              >
                 Avaliar
               </CustomText>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.reviewOptionButton} >
-              <CustomText style={styles.reviewOptionButtonText}>
-                Ver avaliações
-              </CustomText>
-            </TouchableOpacity>
+            {
+              avaliacaoMedia  ?
+              <TouchableOpacity style={styles.reviewOptionButton} >
+                <CustomText style={styles.reviewOptionButtonText}>
+                  Ver avaliações
+                </CustomText>
+              </TouchableOpacity> : null
+            }
           </View>
         </View>
         {
