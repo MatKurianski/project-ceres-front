@@ -6,6 +6,7 @@ import WhatsappButton from '../Custom/WhatsappButton'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { AuthCtx } from './../Context/Auth'
 import request from '../../actions/request'
+import { Rating } from 'react-native-ratings'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -118,6 +119,36 @@ function Produto(props) {
           null
         }
         <CustomText bold={true} style={styles.label}>
+          Avaliações
+        </CustomText>
+        <View style={styles.reviewContainer}>
+          <View style={styles.reviewRatingContainer}>
+            <CustomText bold style={styles.reviewCount}>
+              4.5 / 5
+            </CustomText>
+            <Rating
+              imageSize={40}
+              type="heart"
+              startingValue={4.5}
+              fractions={2}
+              ratingCount={5}
+              readonly
+            />
+          </View>
+          <View style={styles.reviewOptions}>
+            <TouchableOpacity style={[styles.reviewOptionButton, styles.reviewOptionsButtonLeft]} >
+              <CustomText style={styles.reviewOptionButtonText} >
+                Avaliar
+              </CustomText>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.reviewOptionButton} >
+              <CustomText style={styles.reviewOptionButtonText}>
+                Ver avaliações
+              </CustomText>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <CustomText bold={true} style={styles.label}>
           Faça um pedido para o vendedor!
         </CustomText>
         <WhatsappButton telefone={vendedor.telefone} />
@@ -175,6 +206,37 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.3,
     marginHorizontal: 10
+  },
+  reviewContainer: {
+    borderRadius: 8,
+    borderWidth: 0.3,
+    backgroundColor: 'white',
+    borderColor: 'grey',
+  },
+  reviewRatingContainer: {
+    paddingVertical: 20
+  },
+  reviewCount: {
+    fontSize: 36,
+    textAlign: 'center',
+    marginBottom: 15
+  },
+  reviewOptions: {
+    flexDirection: 'row',
+    flex: 1
+  },
+  reviewOptionsButtonLeft: {
+    borderRightWidth: 0.5
+  },
+  reviewOptionButton: {
+    flex: 1,
+    paddingVertical: 15,
+    borderTopWidth: 0.5
+  },
+  reviewOptionButtonText: {
+    textAlign: 'center',
+    fontSize: 16,
+    textAlignVertical: 'center'
   },
   vendedorContainer: {
     borderWidth: 0.5,
