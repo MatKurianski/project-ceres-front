@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
         <SearchBar />
         <CategoriesSection />
         <SectionHeader>
