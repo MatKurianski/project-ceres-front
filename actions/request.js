@@ -16,15 +16,27 @@ export default function request(route, options={}) {
 
   return new Promise(async (resolve, reject) => {
     try {
-      resolve(
-        await req(route, body, {
-          headers: {
-            token,
-            'Content-Type': contentType
-          },
-          timeout: 5000
-        })
-      )
+      if(method === 'DELETE') {
+        resolve(
+          await req(route, {
+            headers: {
+              token,
+              'Content-Type': contentType
+            },
+            timeout: 5000
+          })
+        )
+      } else {
+        resolve(
+          await req(route, body, {
+            headers: {
+              token,
+              'Content-Type': contentType
+            },
+            timeout: 5000
+          })
+        )
+      }
     } catch(e) {
       if(disableConnectionErrorMessage) ToastAndroid.show('Erro de conexão', ToastAndroid.SHORT)
       reject(e)

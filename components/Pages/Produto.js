@@ -1,16 +1,46 @@
 import React from 'react'
-import { View, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import { View, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import CustomText from '../Custom/CustomText'
-import { Linking } from 'expo'
 import WhatsappButton from '../Custom/WhatsappButton'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { AuthCtx } from './../Context/Auth'
+import request from '../../actions/request'
 
 const screenWidth = Dimensions.get('window').width
 
 function Produto(props) {
   const [height, setHeight] = React.useState(0)
-  const userData = props.navigation.getParam('userData')
-  const { imagem, vendedor, descricao, preco, categorias } = userData
+  const { userData } = React.useContext(AuthCtx)
+  const dadosProduto = props.navigation.getParam('userData')
+  const { imagem, vendedor, descricao, preco, categorias, idProduto } = dadosProduto
+
+  const deletarProduto = () => {
+    Alert.alert(
+      'Tem certeza disso?',
+      'Uma vez removido, o produto não poderá ser recuperado',
+      [
+        {
+          text: 'Cancelar',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Desejo deletar', onPress: () => {
+          const { token } = userData
+          request('/products/'+idProduto, {
+            method: 'DELETE',
+            token: token,
+          })
+          .then(res => {
+            const { status } = res.data
+            if(status ==='sucesso') props.navigation.goBack()
+          })
+          .catch(e => console.log(e))
+        }},
+      ],
+      {cancelable: false},
+    );      
+  }
 
   React.useEffect(() => {
     Image.getSize(imagem, (width, height) => {
@@ -19,6 +49,22 @@ function Produto(props) {
       setHeight(imageHeight)
     })
   }, [])
+
+  React.useEffect(() => {
+    if(vendedor.id === userData.id) {
+      props.navigation.setParams({
+        deleteButton: () => (
+          <MaterialCommunityIcons 
+            name="delete-outline"
+            color="red"
+            size={32}
+            style={{paddingHorizontal: 15}}
+            onPress={() => deletarProduto()}
+          />
+        )
+      })
+    }
+  }, [userData])
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -176,6 +222,7 @@ Produto.navigationOptions = ({navigation}) => ({
     borderBottomWidth: 0,
     elevation: 6
   },
+  headerRight: navigation.getParam('deleteButton')
 })
 
 export default withNavigation(Produto)

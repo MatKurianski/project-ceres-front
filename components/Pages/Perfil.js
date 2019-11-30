@@ -57,7 +57,6 @@ function Perfil(props) {
   const {userData, signOut} = React.useContext(AuthCtx)
   const [vendedor, setVendedor] = React.useState({})
   const idVendedor = props.navigation.getParam('idVendedor')
-  console.log(vendedor)
 
   let isMe = false
   if(userData.logged) {

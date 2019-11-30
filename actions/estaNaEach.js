@@ -6,7 +6,7 @@ import { Notifications } from 'expo'
 import { TOKEN_KEY } from './../components/Context/Auth'
 
 const abs = Math.abs
-const radius = 0.003
+const radius = 0.0035
 
 export function estaNaEACH(latitude, longitude) {
   const EACH = { lat: -23.4823919, log: -46.502638 }

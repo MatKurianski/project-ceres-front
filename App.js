@@ -37,7 +37,7 @@ Permissions.askAsync(Permissions.LOCATION)
   .then(res => {
     if(!res) return
     Location.startLocationUpdatesAsync(task, {
-      timeInterval: 300000,
+      timeInterval: 120000,
       accuracy: Location.Accuracy.High,
       foregroundService: {
         notificationTitle: 'Fique tranquilo!',
