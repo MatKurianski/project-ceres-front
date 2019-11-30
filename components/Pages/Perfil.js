@@ -7,9 +7,8 @@ import LoginButton from './../Custom/LoginButton'
 import { getApiUrl } from './../../assets/config'
 import Product from './../Pages/Products'
 import { verificarSeEstaNaEach } from '../../actions/estaNaEach'
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import request from '../../actions/request'
-import { Linking } from 'expo'
 import WhatsappButton from '../Custom/WhatsappButton'
 
 const { width } = Dimensions.get('window')
@@ -82,10 +81,12 @@ function Perfil(props) {
     StatusBar.setBackgroundColor('tomato')
     StatusBar.setBarStyle("light-content")
     verificarSeEstaNaEach()
+    getUserInfo()
     const listener1 = props.navigation.addListener('didFocus', () => {
       StatusBar.setBackgroundColor('tomato')
       StatusBar.setBarStyle("light-content")
       verificarSeEstaNaEach()
+      getUserInfo()
     })
     const listener2 = props.navigation.addListener('willBlur', () => {
       StatusBar.setBackgroundColor('#fff')
@@ -98,7 +99,7 @@ function Perfil(props) {
     }
   }, [])
 
-  React.useEffect(() => {
+  function getUserInfo() {
     if(!userData.logged && !idVendedor) return
     request('/vendedor/'+ (isMe ? userData.id : idVendedor))
       .then(res => {
@@ -111,7 +112,7 @@ function Perfil(props) {
         setVendedor(_vendedor)
       })
       .then(err => {})
-  }, [userData.logged])
+  }
 
   return (
     <>
@@ -125,6 +126,15 @@ function Perfil(props) {
                 <CustomText bold={true} style={styles.nome}>
                   {vendedor.nome}
                 </CustomText>
+                  {
+                    vendedor.online ? 
+                    <CustomText bold style={{color: 'green', ...styles.status}}>
+                      Está na EACH!
+                    </CustomText> :
+                    <CustomText style={styles.status}>
+                      Não está na EACH
+                    </CustomText>
+                  }
                 <View style={styles.secao}>
                   <View style={styles.square}>
                     <CustomText bold={true} style={styles.squareBigText}>{vendedor.produtos ? vendedor.produtos.length : '?'}</CustomText>
@@ -192,6 +202,10 @@ const styles = StyleSheet.create({
     top: -45,
     borderRadius: 95 / 2  ,
     alignSelf: 'center',
+  },
+  status: {
+    paddingTop: 15  ,
+    textAlign: 'center'
   },
   profileInfo: {
     flex: 0,
