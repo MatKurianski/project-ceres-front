@@ -72,7 +72,10 @@ function Perfil(props) {
     {
       title: "Sair",
       desc: "Fazer logoff",
-      onPress: () => signOut(),
+      onPress: () => {
+        signOut()
+        setVendedor({})
+      },
       icon:   "exit-to-app"
     }
   ]
@@ -86,7 +89,6 @@ function Perfil(props) {
       StatusBar.setBackgroundColor('tomato')
       StatusBar.setBarStyle("light-content")
       verificarSeEstaNaEach()
-      getUserInfo()
     })
     const listener2 = props.navigation.addListener('willBlur', () => {
       StatusBar.setBackgroundColor('#fff')
@@ -113,6 +115,10 @@ function Perfil(props) {
       })
       .then(err => {})
   }
+
+  React.useEffect(() => {
+    getUserInfo()
+  }, [userData])
 
   return (
     <>

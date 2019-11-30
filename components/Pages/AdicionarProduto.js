@@ -40,6 +40,8 @@ export default function AdicionarProduto(props) {
       .catch(e => {})
   }, [])
 
+  console.log(userData)
+
   const toggleSelected = categoriaNome => {
     const _categorias = [...categoriasSelecionadas]
     _categorias.forEach(categoria => {
