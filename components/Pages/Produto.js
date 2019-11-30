@@ -148,10 +148,15 @@ function Produto(props) {
             </TouchableOpacity>
           </View>
         </View>
-        <CustomText bold={true} style={styles.label}>
-          Faça um pedido para o vendedor!
-        </CustomText>
-        <WhatsappButton telefone={vendedor.telefone} />
+        {
+          vendedor.id !== userData.id ?
+          <>
+            <CustomText bold={true} style={styles.label}>
+              Faça um pedido para o vendedor!
+            </CustomText>
+            <WhatsappButton telefone={vendedor.telefone} />
+          </> : null
+        }
         <View style={styles.separator} />
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Perfil2', {
