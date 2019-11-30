@@ -106,6 +106,7 @@ function Perfil(props) {
         _vendedor.foto = getApiUrl() + '/uploads/vendedores/' + _vendedor.foto
         _vendedor.produtos.forEach(produto => {
           produto.imagem = getApiUrl() + '/uploads/produtos/' + produto.imagem
+          produto.vendedor.foto = _vendedor.foto
         })
         setVendedor(_vendedor)
       })
