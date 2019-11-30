@@ -61,6 +61,8 @@ export async function startLocationUpdate() {
 }
 
 export async function verificarSeEstaNaEach() {
+  const isLocationEnabled = await AsyncStorage.getItem('geoconfig')
+  if(isLocationEnabled === 'disabled') return
   const permission = await Permissions.askAsync(Permissions.LOCATION)
   if(permission.status !== 'granted') return
 
