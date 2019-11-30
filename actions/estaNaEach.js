@@ -49,6 +49,17 @@ export async function _verificarSeEstaNaEach(latitude, longitude) {
     .catch(e => {})
 }
 
+export async function startLocationUpdate() {
+  Location.startLocationUpdatesAsync('EACH', {
+    timeInterval: 120000,
+    accuracy: Location.Accuracy.High,
+    foregroundService: {
+      notificationTitle: 'Fique tranquilo!',
+      notificationBody: "Só estamos interessados em saber se você está na EACH (:"
+    }
+  })
+}
+
 export async function verificarSeEstaNaEach() {
   const permission = await Permissions.askAsync(Permissions.LOCATION)
   if(permission.status !== 'granted') return

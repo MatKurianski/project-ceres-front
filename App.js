@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Pages/Login'
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, AsyncStorage } from 'react-native';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -23,7 +23,7 @@ import Products from './components/Pages/Products'
 import * as Font from 'expo-font'
 import Home from './components/Pages/Home';
 import Produto from './components/Pages/Produto';
-import { _verificarSeEstaNaEach } from './actions/estaNaEach'
+import { _verificarSeEstaNaEach, startLocationUpdate } from './actions/estaNaEach'
 
 const task = "EACH"
 
@@ -31,19 +31,15 @@ TaskManager.defineTask(task, ({ data: { locations }, error }) => {
   if (error) return;
   const { latitude, longitude } = locations[locations.length-1].coords
   _verificarSeEstaNaEach(latitude, longitude)  
-  })
+})
 
 Permissions.askAsync(Permissions.LOCATION)
   .then(res => {
     if(!res) return
-    Location.startLocationUpdatesAsync(task, {
-      timeInterval: 120000,
-      accuracy: Location.Accuracy.High,
-      foregroundService: {
-        notificationTitle: 'Fique tranquilo!',
-        notificationBody: "Só estamos interessados em saber se você está na EACH (:"
-      }
-    })
+    AsyncStorage.getItem('geoconfig')
+      .then(res => {
+        if(res === 'enabled') startLocationUpdate()
+      })
   })
 
 const BottomTabNavigator = createBottomTabNavigator(
