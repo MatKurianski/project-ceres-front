@@ -15,6 +15,10 @@ export function estaNaEACH(latitude, longitude) {
 
 let _estaNaEACH = false
 export async function _verificarSeEstaNaEach(latitude, longitude) {
+  if(!latitude || !longitude) {
+    console.log('error')
+    return
+  }
   AsyncStorage.getItem(TOKEN_KEY)
     .then(userData => {
       if(userData == null) return
@@ -68,7 +72,7 @@ export async function verificarSeEstaNaEach() {
 
   Location.getCurrentPositionAsync({enableHighAccuracy: true})
     .then(location => {
-      const { latitude, longitude } = location
+      const { latitude, longitude } = location.coords
       _verificarSeEstaNaEach(latitude, longitude)
     })
     .catch(e => console.log(e));
