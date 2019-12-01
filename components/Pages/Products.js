@@ -13,7 +13,7 @@ function Products(props) {
 
   const getProducts = async () => {
     const query = props.navigation.getParam('query')
-
+    if(props.productData) return
     setRefreshing(true)
     request(query || props.query || '/products')
       .then(res => {

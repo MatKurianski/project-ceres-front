@@ -66,7 +66,9 @@ function Perfil(props) {
     {
       title: "Adicionar produto",
       desc: "Comece a anunciar agora mesmo!",
-      onPress: () => props.navigation.navigate('AdicionarProduto'),
+      onPress: () => props.navigation.navigate('AdicionarProduto', {
+        onGoBack: () => getUserInfo()
+      }),
       icon: 'add'
     },
     {
@@ -121,7 +123,7 @@ function Perfil(props) {
     <>
       {userData.logged || idVendedor ? 
         <>
-          <ScrollView showsVerticalScrollIndicator={false} style={styles.background}>
+          <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} style={styles.background}>
             <View style={{backgroundColor: 'tomato', position: 'absolute', width, height: 300}} />
             <View style={styles.container}>
               <Image style={styles.profilePhoto} source={{uri: vendedor.foto}} />
@@ -145,7 +147,7 @@ function Perfil(props) {
                   </View>
                   <View style={styles.square}>
                     <CustomText bold={true} style={styles.squareBigText}>
-                      {vendedor.notaVendedor ? vendedor.notaVendedor : 'N/A'}
+                      {vendedor.notaVendedor ? vendedor.notaVendedor.toFixed(2) : 'N/A'}
                     </CustomText>
                     <CustomText style={styles.squareSmallText}>Estrelas</CustomText>
                   </View>

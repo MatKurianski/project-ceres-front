@@ -41,7 +41,7 @@ function FazerAvaliacao(props) {
     }).then(res => {
       if(res.data) {
         const { status } = res.data
-        if(status === 'sucesso') props.navigation.goBack()
+        if(status === 'sucesso') props.navigation.navigate('Home')
       }
     }).catch(e => {})
   }

@@ -68,7 +68,7 @@ function Produto(props) {
   }, [userData])
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+    <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image 
           source={{uri: imagem}}
@@ -127,7 +127,7 @@ function Produto(props) {
               avaliacaoMedia ?
               <>
                 <CustomText bold style={styles.reviewCount}>
-                  {avaliacaoMedia}
+                  {avaliacaoMedia.toFixed(2)}
                 </CustomText>
                 <Rating
                   imageSize={40}

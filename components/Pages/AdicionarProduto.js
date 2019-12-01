@@ -40,8 +40,6 @@ export default function AdicionarProduto(props) {
       .catch(e => {})
   }, [])
 
-  console.log(userData)
-
   const toggleSelected = categoriaNome => {
     const _categorias = [...categoriasSelecionadas]
     _categorias.forEach(categoria => {
@@ -83,8 +81,8 @@ export default function AdicionarProduto(props) {
   }
 
   function adicionarProduto() {
-    if(!nome || precoNumero === 0 || imagem === '' || descricao === '') {
-      ToastAndroid.show("Revise suas informações", ToastAndroid.SHORT)
+    if(!imagem) {
+      ToastAndroid.show('É obrigatório enviar uma imagem do produto!', ToastAndroid.SHORT)
       return
     }
     setBotaoAdicionarDesabilitado(true)
@@ -109,9 +107,11 @@ export default function AdicionarProduto(props) {
     }).then(res => {
       if(res.data.status === 'sucesso') {
         ToastAndroid.show('Sucesso!', ToastAndroid.SHORT)
+        const goBack = props.navigation.getParam('onGoBack')
+        if(goBack) goBack()
         props.navigation.pop()
-      }
-    }).catch(err => console.log)
+      } else ToastAndroid.show(res.data.status, ToastAndroid.SHORT)
+    }).catch(err => console.log(err))
     .finally(() => setBotaoAdicionarDesabilitado(false))
   }
 
