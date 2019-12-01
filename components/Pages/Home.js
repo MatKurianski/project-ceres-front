@@ -25,9 +25,17 @@ export default function Home() {
         <SearchBar />
         <CategoriesSection />
         <SectionHeader>
+          Mais populares
+        </SectionHeader>
+        <Products query="/popular" limit={3} />
+        <SectionHeader>
+          Por usuários online
+        </SectionHeader>
+        <Products query="/fromonlineusers" limit={8} />
+        <SectionHeader>
           Todos os produtos
         </SectionHeader>
-        <Products />
+        <Products limit={10} />
       </ScrollView>
     </View>
   );

@@ -93,31 +93,6 @@ function Produto(props) {
           ) :
           null
         }
-        { 
-          categorias.length > 0 ? 
-          (
-            <>
-              <CustomText bold={true} style={styles.label}>
-                Categorias
-              </CustomText>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.categoriaContainer}>
-                {categorias.map(categoria => (
-                  <TouchableOpacity
-                    key={categoria.idCategoria}
-                    onPress={() => props.navigation.navigate('Produtos', {
-                      title: 'Categoria : '+categoria.nomeCategoria,
-                      query: '/products/categories/'+categoria.idCategoria
-                    })} >
-                    <CustomText style={styles.categoria}>
-                      {categoria.nomeCategoria}
-                    </CustomText>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </>
-          ) :
-          null
-        }
         <CustomText bold={true} style={styles.label}>
           Avaliações
         </CustomText>
@@ -165,6 +140,31 @@ function Produto(props) {
             }
           </View>
         </View>
+        { 
+          categorias.length > 0 ? 
+          (
+            <>
+              <CustomText bold={true} style={styles.label}>
+                Categorias
+              </CustomText>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.categoriaContainer}>
+                {categorias.map(categoria => (
+                  <TouchableOpacity
+                    key={categoria.idCategoria}
+                    onPress={() => props.navigation.navigate('Produtos', {
+                      title: 'Categoria : '+categoria.nomeCategoria,
+                      query: '/products/categories/'+categoria.idCategoria
+                    })} >
+                    <CustomText style={styles.categoria}>
+                      {categoria.nomeCategoria}
+                    </CustomText>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </>
+          ) :
+          null
+        }
         {
           vendedor.id !== userData.id ?
           <>

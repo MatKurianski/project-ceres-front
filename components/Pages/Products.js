@@ -21,7 +21,9 @@ function Products(props) {
           produto.imagem = getApiUrl() +'/uploads/produtos/'+ produto.imagem
           produto.vendedor.foto = getApiUrl() +'/uploads/vendedores/'+ produto.vendedor.foto
         })
-        setProdutos(res.data)
+        let produtos = res.data
+        if(props.limit) produtos = produtos.slice(0, props.limit)
+        setProdutos(produtos)
       })
       .catch(err => console.err())
       .finally(() => {
