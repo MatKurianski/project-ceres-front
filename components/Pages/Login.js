@@ -29,7 +29,7 @@ export default function Login(props) {
       if (status === "sucesso") {
         signIn(userData)
         ToastAndroid.show('Logado com sucesso!', ToastAndroid.LONG);
-        props.navigation.pop()
+        props.navigation.navigate('Perfil')
       } else if(userData.mensagem !== undefined) {
         ToastAndroid.show(userData.mensagem, ToastAndroid.SHORT)
       }

@@ -56,6 +56,7 @@ function Perfil(props) {
   const {userData, signOut} = React.useContext(AuthCtx)
   const [vendedor, setVendedor] = React.useState({})
   const idVendedor = props.navigation.getParam('idVendedor')
+  const [lastUpdate, setLastUpdate] = React.useState(0)
 
   let isMe = false
   if(userData.logged) {
@@ -83,7 +84,8 @@ function Perfil(props) {
     StatusBar.setBackgroundColor('tomato')
     StatusBar.setBarStyle("light-content")
     verificarSeEstaNaEach()
-    const listener1 = props.navigation.addListener('didFocus', () => {
+    const listener1 = props.navigation.addListener('didFocus', function(payload) {
+      setLastUpdate(Date.now())
       StatusBar.setBackgroundColor('tomato')
       StatusBar.setBarStyle("light-content")
       verificarSeEstaNaEach()
@@ -116,7 +118,7 @@ function Perfil(props) {
 
   React.useEffect(() => {
     getUserInfo()
-  }, [userData.token])
+  }, [userData.id, lastUpdate])
 
   return (
     <>
