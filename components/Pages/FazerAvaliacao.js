@@ -8,6 +8,7 @@ import { Rating } from 'react-native-ratings'
 import CustomTextInput from '../Custom/CustomTextInput'
 import CustomButton from '../Custom/CustomButton'
 import AvaliacaoCard from '../Cards/AvaliacaoCard'
+import LoginButton from '../Custom/LoginButton'
 
 const {height, width} = Dimensions.get('window');
 
@@ -20,7 +21,7 @@ function FazerAvaliacao(props) {
   const [comentario, setComentario] = React.useState('')
 
   React.useEffect(() => {
-    request('/product/rate/'+idProduto, {
+    request('/products/rate/'+idProduto, {
       token: userData.token,
       method: 'GET'
     }).then(res => {
@@ -49,45 +50,53 @@ function FazerAvaliacao(props) {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       {
-        isLoading ?  null :
-          !avaliacao ? 
-        <>
-          <Rating
-            imageSize={60}
-            type="heart"
-            startingValue={1}
-            fractions={0}
-            ratingCount={5}
-            onFinishRating={rating => setEstrelas(parseInt(rating))}
-          />
-          <CustomTextInput
-            style={styles.comentarioTextInput}
-            placeholder="Faça um comentário (opcional)"
-            multiline={true} 
-            numberOfLines={6}
-            value={comentario}
-            onChangeText={comentario => setComentario(comentario)}
-          />
-          <CustomButton title="Avaliar" onPress={() => submeterAvaliacao()}/>
-        </> :
-        <>
-          <CustomText>
-            Você já avaliou
-          </CustomText>
-          <AvaliacaoCard comentario={avaliacao.comentario} nota={avaliacao.nota} />
-          <CustomButton title="Remover avaliação" onPress={() => {
-            request('/products/undo_rate/'+idProduto, {
-              method: 'DELETE',
-              token: userData.token
-            }).then(res => {
-                if(res.data.status === 'sucesso') {
-                  ToastAndroid.show('Sucesso!', ToastAndroid.SHORT)
-                  props.navigation.navigate('Home')  
-                }
-              }).catch(e => console.log(e))
-          }} />
-        </>
-      }
+        userData.logged ?
+          isLoading ?  null :
+            !avaliacao ? 
+          <>
+            <Rating
+              imageSize={60}
+              type="heart"
+              startingValue={1}
+              fractions={0}
+              ratingCount={5}
+              onFinishRating={rating => setEstrelas(parseInt(rating))}
+            />
+            <CustomTextInput
+              style={styles.comentarioTextInput}
+              placeholder="Faça um comentário (opcional)"
+              multiline={true} 
+              numberOfLines={6}
+              value={comentario}
+              onChangeText={comentario => setComentario(comentario)}
+            />
+            <CustomButton title="Avaliar" onPress={() => submeterAvaliacao()}/>
+          </> :
+          <>
+            <CustomText>
+              Você já avaliou
+            </CustomText>
+            <AvaliacaoCard comentario={avaliacao.comentario} nota={avaliacao.nota} />
+            <CustomButton title="Remover avaliação" onPress={() => {
+              request('/products/undo_rate/'+idProduto, {
+                method: 'DELETE',
+                token: userData.token
+              }).then(res => {
+                  if(res.data.status === 'sucesso') {
+                    ToastAndroid.show('Sucesso!', ToastAndroid.SHORT)
+                    props.navigation.navigate('Home')  
+                  }
+                }).catch(e => console.log(e))
+            }} />
+          </>
+          :
+          <>
+            <CustomText>
+              Você precisa estar logado
+            </CustomText>
+            <LoginButton title="Fazer login" />
+          </>
+        }
     </ KeyboardAvoidingView>
   )
 }
