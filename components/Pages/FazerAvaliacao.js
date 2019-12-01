@@ -91,7 +91,7 @@ function FazerAvaliacao(props) {
           </>
           :
           <>
-            <CustomText>
+            <CustomText style={{marginBottom: 20}}>
               Você precisa estar logado
             </CustomText>
             <LoginButton title="Fazer login" />

@@ -83,7 +83,6 @@ function Perfil(props) {
     StatusBar.setBackgroundColor('tomato')
     StatusBar.setBarStyle("light-content")
     verificarSeEstaNaEach()
-    getUserInfo()
     const listener1 = props.navigation.addListener('didFocus', () => {
       StatusBar.setBackgroundColor('tomato')
       StatusBar.setBarStyle("light-content")
@@ -117,7 +116,7 @@ function Perfil(props) {
 
   React.useEffect(() => {
     getUserInfo()
-  }, [userData])
+  }, [userData.token])
 
   return (
     <>
