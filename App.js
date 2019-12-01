@@ -7,7 +7,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 import * as Permissions from 'expo-permissions'
-import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
 import { Updates } from 'expo'
 
@@ -25,6 +24,7 @@ import Home from './components/Pages/Home';
 import Produto from './components/Pages/Produto';
 import { _verificarSeEstaNaEach, startLocationUpdate } from './actions/estaNaEach'
 import FazerAvaliacao from './components/Pages/FazerAvaliacao';
+import Avaliacoes from './components/Pages/Avaliacoes'
 
 const task = "EACH"
 
@@ -141,6 +141,10 @@ const MainStack = createStackNavigator({
   FazerAvaliacao: {
     screen: FazerAvaliacao,
     navigationOptions: backWhiteHeaderAndTitle('Avaliando produto')
+  },
+  Avaliacoes: {
+    screen: Avaliacoes,
+    navigationOptions: backWhiteHeaderAndTitle('Avaliações do produto')
   },
   Produto: {
     screen: Produto

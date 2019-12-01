@@ -1,13 +1,13 @@
 import React from 'react'
-import { View, StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native'
+import { ToastAndroid, StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native'
 import CustomText from '../Custom/CustomText'
 import request from '../../actions/request'
 import { AuthCtx } from './../Context/Auth'
 import { withNavigation } from 'react-navigation'
 import { Rating } from 'react-native-ratings'
 import CustomTextInput from '../Custom/CustomTextInput'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CustomButton from '../Custom/CustomButton'
+import AvaliacaoCard from '../Cards/AvaliacaoCard'
 
 const {height, width} = Dimensions.get('window');
 
@@ -20,7 +20,7 @@ function FazerAvaliacao(props) {
   const [comentario, setComentario] = React.useState('')
 
   React.useEffect(() => {
-    request('/products/rate/'+idProduto, {
+    request('/product/rate/'+idProduto, {
       token: userData.token,
       method: 'GET'
     }).then(res => {
@@ -70,9 +70,23 @@ function FazerAvaliacao(props) {
           />
           <CustomButton title="Avaliar" onPress={() => submeterAvaliacao()}/>
         </> :
-        <CustomText>
-          Você já avaliou
-        </CustomText>
+        <>
+          <CustomText>
+            Você já avaliou
+          </CustomText>
+          <AvaliacaoCard comentario={avaliacao.comentario} nota={avaliacao.nota} />
+          <CustomButton title="Remover avaliação" onPress={() => {
+            request('/products/undo_rate/'+idProduto, {
+              method: 'DELETE',
+              token: userData.token
+            }).then(res => {
+                if(res.data.status === 'sucesso') {
+                  ToastAndroid.show('Sucesso!', ToastAndroid.SHORT)
+                  props.navigation.navigate('Home')  
+                }
+              }).catch(e => console.log(e))
+          }} />
+        </>
       }
     </ KeyboardAvoidingView>
   )

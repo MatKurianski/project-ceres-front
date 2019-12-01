@@ -154,7 +154,10 @@ function Produto(props) {
             </TouchableOpacity>
             {
               avaliacaoMedia  ?
-              <TouchableOpacity style={styles.reviewOptionButton} >
+              <TouchableOpacity 
+                style={styles.reviewOptionButton} 
+                onPress={() => props.navigation.navigate('Avaliacoes', {idProduto})}
+              >
                 <CustomText style={styles.reviewOptionButtonText}>
                   Ver avaliações
                 </CustomText>
